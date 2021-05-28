@@ -12,6 +12,14 @@ EVENT_MN_PICTURE = "assets/eventicons/info_icon.png"
 eventMN_list = [EVENT_MN_BACKGROUND, EVENT_MN_HEADLINE,
                 EVENT_MN_TEXT, EVENT_MN_PICTURE]
 
+# Hospitalunlock
+EVENT_HOSUNLOCK_BACKGROUND = "assets/alert_bg.png"
+EVENT_HOSUNLOCK_HEADLINE = " Infektion entdeckt! "
+EVENT_HOSUNLOCK_TEXT = " Eins deiner Testzentren hat eine kranke Person enteckt. Du erkennst kranke Personen an ihrer roten Farbe. Baue ein Krankenhaus um die Person zu heilen. Aber pass auf: Das Geundheitsministerium hat nur ein begrenztes Budget."
+EVENT_HOSUNLOCK_PICTURE = "assets/buildingicons/hospital_scaled.png"
+event_HOSUNLOCK_list = [EVENT_HOSUNLOCK_BACKGROUND, EVENT_HOSUNLOCK_HEADLINE,
+                EVENT_HOSUNLOCK_TEXT, EVENT_HOSUNLOCK_PICTURE]
+
 # 01
 EVENT_01_BACKGROUND = "assets/alert_bg.png"
 EVENT_01_HEADLINE = " Willkommen! "
@@ -31,8 +39,9 @@ event01_list = [EVENT_01_BACKGROUND, EVENT_01_HEADLINE,
 EVENT_02_BACKGROUND = "assets/alert_bg.png"
 EVENT_02_HEADLINE = " Erste Infektionen "
 EVENT_02_TEXT = """Die Geruechte aus dem Ausland sind wahr: Es wurden die ersten Infektionen in den Nachbarlaendern festgestellt. Vermutlich ist auch die deutsche Bevoelkerung betroffen. Ein Team des Deutschen Zentrums fuer Infektionsforschung hat ein Testverfahren entwickelt, welches allerdings sehr kostspielig ist.
+
 Baue Testzentren um Infektionsherde in einzelnen Regionen zu lokalisieren."""
-EVENT_02_PICTURE = "assets/eventicons/virus_icon.png"
+EVENT_02_PICTURE = "assets/buildingicons/testcenter_scaled.png"
 event02_list = [EVENT_02_BACKGROUND, EVENT_02_HEADLINE,
                 EVENT_02_TEXT, EVENT_02_PICTURE]
 

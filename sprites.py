@@ -287,6 +287,12 @@ class TestCenter(BuildingTemplate):
         for sprite in spritelist:
             sprite.apply_colour()
 
+        if not self.game.hospitalunlocked:  # unlock hospital after first found infection
+            spritelist = pygame.sprite.spritecollide(self, self.game.infected, False,
+                                                     pygame.sprite.collide_circle)
+            for sprite in spritelist:
+                self.game.hospitalunlocked = True
+
 
 class Hospital(BuildingTemplate):
     def __init__(self, game):
@@ -304,7 +310,7 @@ class Hospital(BuildingTemplate):
             sprite.heal()
 
 
-class VaccineCenter(BuildingTemplate):
+class VaccineCenter(BuildingTemplate):  # TODO: make vacc c unavailable until event in late 2020
     def __init__(self, game):
         self.range = VACCINECENTER_RANGE
         self.price = VACCINECENTER_PRICE

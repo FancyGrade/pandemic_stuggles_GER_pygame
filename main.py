@@ -8,6 +8,11 @@ from tilemap import *
 from events import *
 import pytmx  # pytmx
 
+# TODO: add settings screen
+#   maybe as an function which can be called in the start screen after applying settings?
+
+# TODO: restructure files so that it's possible to pack it into one .exe
+
 
 class Game:
     def __init__(self):
@@ -20,6 +25,8 @@ class Game:
         pygame.mouse.set_cursor(pygame.cursors.tri_left)
         self.mouseover = 0
         self.mouseover_cursor = False
+
+        # TODO: add sound effects + music
 
         # load load_data
         self.running = True
@@ -66,6 +73,8 @@ class Game:
 
         # building setup
         self.currently_selected_building = None
+        self.hospitalunlocked = False
+        self.hospitalunlocked_event_shown = False
 
         # USEREVENTS
         self.BUILD_TESTCENTER = pygame.USEREVENT + 0
@@ -272,9 +281,8 @@ class Game:
                 self.human_count -= 1
 
         # create build icons
-        testcentericon = BuildingIcon(self, "testcenter", 100)
-        hospitalicon = BuildingIcon(self, "hospital", 0)
-        vaccicon = BuildingIcon(self, "vacc", -100)
+        #
+        # vaccicon = BuildingIcon(self, "vacc", -100)
 
         # show welcome event
         self.time_event_setup(*event01_list)
@@ -394,10 +402,11 @@ class Game:
         year = self.year
         week = self.week_counter
 
-        # EVENT 2
+        # EVENT 1
         if month == "Januar" and year == 2020 and week == 2:
             self.time_event_setup(*event02_list)
             self.show_event = True
+            testcentericon = BuildingIcon(self, "testcenter", 100)
 
         # EVENT 2
         # if self.date_tracker == 2 and self.year == 2020:
@@ -405,6 +414,15 @@ class Game:
         #     self.show_event = True
         #
         #     self.money -= 100
+
+        if self.hospitalunlocked:
+            if not self.hospitalunlocked_event_shown:
+                self.hospitalunlocked_event_shown = True
+                self.time_event_setup(*event_HOSUNLOCK_list)
+                self.show_event = True
+                hospitalicon = BuildingIcon(self, "hospital", 0)
+
+
 
     # --------------------------------------------
 
@@ -479,11 +497,11 @@ class Game:
         pygame.display.flip()
 
     # --------------------------------------------
-    def show_start_screen(self):
+    def show_start_screen(self):  # TODO: add start screen
         pass
 
     # --------------------------------------------
-    def show_gameover_screen(self):
+    def show_gameover_screen(self):  # TODO: add end screen
         pass
 
 

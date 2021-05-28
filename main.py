@@ -108,10 +108,13 @@ class Game:
 
         # load font
         self.font_munro_small = pygame.font.Font("assets/munro-small.ttf", 30)
-        self.font_munro = pygame.font.Font("assets/munro.ttf", 80)
+        self.font_munro = pygame.font.Font("assets/munro.ttf", 70)
+        self.font_comic_sans = pygame.font.SysFont("Comic Sans MS", 25)
 
     # --------------------------------------------
     def time_event_setup(self, bg, event_headline, event_text, event_picture):
+        headlinefont = self.font_munro
+        textfont = self.font_comic_sans
 
         self.event_background = pygame.image.load(bg)
         event_background_rect = self.event_background.get_rect()
@@ -120,7 +123,7 @@ class Game:
         self.event_background_y = self.event_background.get_height()
 
         # render headline
-        headline = self.font_munro.render(event_headline, False,
+        headline = headlinefont.render(event_headline, False,
                                           pygame.Color(BLACK), pygame.Color(WHITE))
         headline_rect = headline.get_rect()
         headline_rect.center = self.event_background_x / 2, self.event_background_y / 2 - 200
@@ -151,14 +154,14 @@ class Game:
         # make text wrap around lines
         # (stolen from https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame)
         words = [word.split(' ') for word in event_text.splitlines()]
-        space = self.font_munro_small.size(" ")[0]
+        space = textfont.size(" ")[0]
         max_width, max_height = self.current_surface.get_size()
         max_width -= 150
         pos = self.event_background_x / 2 - 360, self.event_background_y / 3
         x, y = pos
         for line in words:
             for word in line:
-                word_surface = self.font_munro_small.render(word, False,
+                word_surface = textfont.render(word, False,
                                                             pygame.Color(WHITE))
                 word_width, word_height = word_surface.get_size()
                 if x + word_width >= max_width:

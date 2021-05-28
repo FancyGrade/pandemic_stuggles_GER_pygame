@@ -6,7 +6,7 @@ from settings import *
 from sprites import *
 from tilemap import *
 from events import *
-import pytmx  # pytmx
+import pytmx
 
 # TODO: add settings screen
 #   maybe as an function which can be called in the start screen after applying settings?
@@ -356,10 +356,7 @@ class Game:
                     else:
                         self.show_event = False
                 if event.key == pygame.K_p:
-                    if self.pause is True:
-                        self.pause = False
-                    else:
-                        self.pause = True
+                    self.pause = not self.pause
             # RMB cancels build mode for buildings, killing the sprite
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
                 for sprite in self.tempbuildings:
@@ -427,17 +424,12 @@ class Game:
     # --------------------------------------------
 
     # --------------------------------------------
-    def draw_grid(self):
-        for x in range(0, WIDTH, TILESIZE):
-            pygame.draw.line(self.gamewindow, BLACK, (x, 0), (x, HEIGHT))
-        for y in range(0, HEIGHT, TILESIZE):
-            pygame.draw.line(self.gamewindow, BLACK, (0, y), (WIDTH, y))
-
     def draw(self):
-        # self.gamewindow.fill(GREY50)
         self.gamewindow.blit(self.map_img, (self.camera_x, self.camera_y))
-        # self.draw_grid()
-        self.all_sprites.draw(self.gamewindow)
+        self.humans.draw(self.gamewindow)
+        self.buildings.draw(self.gamewindow)
+        self.building_icons.draw(self.gamewindow)
+        self.tempbuildings.draw(self.gamewindow)
 
         for building in self.building_icons:
             building.drawinfotext()  # mouseover

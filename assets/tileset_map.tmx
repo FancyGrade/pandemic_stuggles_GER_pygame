@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="150" height="215" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="53">
- <tileset firstgid="1" source="../../../../../../Desktop/py compile test/game/assets/tileset_tsx.tsx"/>
- <tileset firstgid="337" source="../../../../../../Desktop/py compile test/game/assets/water_tsx.tsx"/>
+ <tileset firstgid="1" source="tileset_tsx.tsx"/>
+ <tileset firstgid="337" source="water_tsx.tsx"/>
  <layer id="9" name="Water" width="150" height="215">
   <data encoding="csv">
 362,393,351,355,350,344,339,347,350,366,340,381,375,390,370,386,344,343,378,345,388,387,373,392,348,396,356,359,351,344,346,372,352,356,376,396,341,392,346,359,347,388,343,347,391,387,344,352,371,395,339,354,359,366,354,395,390,383,385,379,388,382,383,377,348,394,355,383,394,360,355,370,342,358,381,349,345,357,388,384,394,391,360,339,375,370,392,361,350,370,355,345,382,388,350,376,354,396,363,364,362,341,380,387,361,342,358,352,351,356,343,361,386,392,354,355,372,381,377,342,360,389,370,386,379,369,361,394,349,393,354,355,340,346,342,343,374,372,384,393,357,354,377,364,344,381,340,362,360,340,

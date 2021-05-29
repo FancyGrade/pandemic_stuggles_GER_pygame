@@ -333,10 +333,23 @@ class Menuoptions():
         self.highlight = False
         self.colour = self.game.option_default_colour
 
-        self.textobject = self.game.font_munro.render(self.text, False, self.colour, GREY150)
+        self.textobject = self.game.font_munro.render(self.text, False, self.colour, self.game.option_background_colour)
 
         self.textobject_rect = self.textobject.get_rect()
         self.textobject_rect.center = WIDTH / 2, HEIGHT / 2 - 100 + y_offset
+
+        self.ready = True
+        self.cooldown_timer = 0
+
+    def check_cooldown(self):
+        if self.cooldown_timer >= int(1*FPS/3) and not self.ready:
+            self.ready = True
+            self.cooldown_timer = 0
+        elif not self.ready:
+            self.cooldown_timer += 1
+        else:
+            pass
+
 
     def get_textobject(self):
         return self.textobject
@@ -348,7 +361,35 @@ class Menuoptions():
         return self.highlight
 
 
-    def update_text(self, colour):
+    def update_text_colour(self, colour):
         if self.colour != colour:
             self.colour = colour
-            self.textobject = self.game.font_munro.render(self.text, False, self.colour, GREY150)
+            self.textobject = self.game.font_munro.render(self.text, False, self.colour,
+                                                          self.game.option_background_colour)
+
+    def draw_text(self):
+        if self.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
+            self.game.mouseover += 1
+            if not self.get_highlighted_status():
+                self.update_text_colour(self.game.option_highlight_colour)
+            if pygame.mouse.get_pressed()[0] and self.ready:
+                if self.ready:
+                    self.ready = False
+                    self.game.gamewindow.blit(self.textobject, self.textobject_rect)
+                    return True
+                else:
+                    pass
+        else:
+            self.update_text_colour(self.game.option_default_colour)
+
+        self.check_cooldown()
+
+        self.game.gamewindow.blit(self.textobject, self.textobject_rect)
+
+
+    def update_text(self, text):
+        self.text = text
+        self.textobject = self.game.font_munro.render(self.text, False, self.colour,
+                                                      self.game.option_background_colour)
+
+

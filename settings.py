@@ -1,4 +1,4 @@
-# the basic strucure of this settings file is heavily influenced by a
+# the basic strucure of this settings file is inspired by a
 # youtube tutorial by "KidsCanCode" released in january 2016:
 # https://youtu.be/uWvb3QzA48c
 
@@ -34,8 +34,10 @@ BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 GREY50 = (50, 50, 50)
 GREY150 = (150, 150, 150)
+GREY222 = (222, 222, 222)
 RED = (255, 0, 0)
 MAGENTA = (139, 0, 139)
+DARKPURPLE = (96, 43, 112)
 
 # lists
 HUMANS_LIST = []

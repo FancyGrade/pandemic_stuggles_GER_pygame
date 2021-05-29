@@ -35,8 +35,8 @@ class Game:
 
         # load load_data
         self.running = True
-        self.load_data()
         self.pause_setup()
+        self.load_data()
 
         # camera setup
         self.camera_x = 0
@@ -362,6 +362,8 @@ class Game:
                         self.show_event = False
                 if event.key == pygame.K_ESCAPE:
                     self.show_menu = not self.show_menu
+                    self.show_credits = False
+                    self.show_settings = False
             # RMB cancels build mode for buildings, killing the sprite
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
                 for sprite in self.tempbuildings:
@@ -440,7 +442,7 @@ class Game:
 
 
         # show FPS
-        if SHOW_FPS:
+        if self.show_fps:
             fps = self.font_munro_small.render("FPS: " + str(int(self.clock.get_fps())),
                                                False, pygame.Color(BLACK))
             self.gamewindow.blit(fps, ((WIDTH - 100), 5))
@@ -448,7 +450,7 @@ class Game:
         count_inf = len(self.infected.sprites())
         count_hum = len(self.humans.sprites())
         count_trt = len(self.ill.sprites())
-        if SHOW_INFECTED:
+        if self.show_infected:
             perc_inf = self.font_munro_small.render((str(count_inf) + " of " +
                                                      str(count_hum) + " infected (" +
                                                      str(int(count_inf / count_hum * 100)) +
@@ -484,22 +486,34 @@ class Game:
 
 
     def pause_setup(self):
-        self.show_credits = False
+        # main menu
+        self.option_default_colour = GREY222
+        self.option_highlight_colour = BLACK
+        self.option_background_colour = DARKPURPLE
 
-        self.option_default_colour = BLACK
-        self.option_highlight_colour = RED
-
-        self.option_continue = Menuoptions(self, " Spiel Starten / Fortsetzen ", 100)
+        self.option_continue = Menuoptions(self, " Spiel Starten / Fortsetzen ", 0)
+        self.option_settings = Menuoptions(self, " Einstellungen ", 100)
         self.option_credits = Menuoptions(self, " Credits ", 200)
         self.option_quit = Menuoptions(self, " Spiel Beenden ", 300)
 
+        # credits
+        self.show_credits = False
         self.creditA = Menuoptions(self, " Ein Spiel von: @FancyGrade ", -100)
         self.creditB = Menuoptions(self, " Mit Musik von: ? ", 0)
         self.creditC = Menuoptions(self, " Veroeffentlicht: 2021 ", 100)
         self.creditD = Menuoptions(self, " Bildrechte: siehe licensing.txt ", 200)
+
         self.option_back_to_menu = Menuoptions(self, " Zurueck zum Menue ", 400)
 
+        # setting_values
+        self.show_infected = SHOW_INFECTED
+        self.show_fps = SHOW_FPS
 
+        # settings
+        self.show_settings = False
+        self.settingA = Menuoptions(self, " Zeige Infect-Stats: "+ str(self.show_infected) + " ", -200)
+        self.settingB = Menuoptions(self, " Zeige FPS: "+ str(self.show_fps) + " ", -100)
+        self.settingC = Menuoptions(self, " Cheat: gebe dir 1000€ ", 0)
 
     def draw_pause(self):
         self.gamewindow.blit(self.map_img, (self.camera_x, self.camera_y))
@@ -512,56 +526,42 @@ class Game:
         self.tempbuildings.draw(self.gamewindow)
 
 
-        if not self.show_credits:
-            if self.option_continue.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
-                self.mouseover += 1
-                if not self.option_continue.get_highlighted_status():
-                    self.option_continue.update_text(self.option_highlight_colour)
-                if pygame.mouse.get_pressed()[0]:
-                    self.show_menu = not self.show_menu
-            else:
-                self.option_continue.update_text(self.option_default_colour)
+        if not self.show_credits and not self.show_settings:
+            if self.option_continue.draw_text():
+                self.show_menu = not self.show_menu
 
-            if self.option_credits.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
-                self.mouseover += 1
-                if not self.option_credits.get_highlighted_status():
-                    self.option_credits.update_text(self.option_highlight_colour)
-                if pygame.mouse.get_pressed()[0]:
-                    self.show_credits = True
-            else:
-                self.option_credits.update_text(self.option_default_colour)
+            if self.option_settings.draw_text():
+                self.show_settings = True
 
-            if self.option_quit.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
-                self.mouseover += 1
-                if not self.option_quit.get_highlighted_status():
-                    self.option_quit.update_text(self.option_highlight_colour)
-                if pygame.mouse.get_pressed()[0]:
-                    print("tschö")
-                    pygame.quit()
-                    sys.exit()
-            else:
-                self.option_quit.update_text(self.option_default_colour)
+            if self.option_credits.draw_text():
+                self.show_credits = True
 
-            self.gamewindow.blit(self.option_continue.get_textobject(), self.option_continue.get_textobject_rect())
-            self.gamewindow.blit(self.option_credits.get_textobject(), self.option_credits.get_textobject_rect())
-            self.gamewindow.blit(self.option_quit.get_textobject(), self.option_quit.get_textobject_rect())
+            if self.option_quit.draw_text():
+                pygame.quit()
+                sys.exit()
 
-        else:
-            if self.option_back_to_menu.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
-                self.mouseover += 1
-                if not self.option_back_to_menu.get_highlighted_status():
-                    self.option_back_to_menu.update_text(self.option_highlight_colour)
-                if pygame.mouse.get_pressed()[0]:
-                    self.show_credits = False
-            else:
-                self.option_back_to_menu.update_text(self.option_default_colour)
-
+        elif self.show_credits:
             self.gamewindow.blit(self.creditA.get_textobject(), self.creditA.get_textobject_rect())
             self.gamewindow.blit(self.creditB.get_textobject(), self.creditB.get_textobject_rect())
             self.gamewindow.blit(self.creditC.get_textobject(), self.creditC.get_textobject_rect())
             self.gamewindow.blit(self.creditD.get_textobject(), self.creditD.get_textobject_rect())
-            self.gamewindow.blit(self.option_back_to_menu.get_textobject(),
-                                 self.option_back_to_menu.get_textobject_rect())
+
+        elif self.show_settings:
+            if self.settingA.draw_text():
+                self.show_infected = not self.show_infected
+                self.settingA.update_text(" Zeige Infect-Stats: "+ str(self.show_infected) + " ")
+
+            if self.settingB.draw_text():
+                self.show_fps = not self.show_fps
+                self.settingB.update_text(" Zeige FPS: " + str(self.show_fps) + " ")
+
+            if self.settingC.draw_text():
+                self.money += 1000
+
+        if self.show_settings or self.show_credits:
+            if self.option_back_to_menu.draw_text():
+                self.show_credits = False
+                self.show_settings = False
 
         pygame.display.flip()
     # --------------------------------------------

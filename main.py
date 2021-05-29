@@ -12,7 +12,6 @@ import sys
 # TODO: add settings screen
 #   maybe as an function which can be called in the start screen after applying settings?
 
-# TODO: restructure files so that it's possible to pack it into one .exe
 
 
 class Game:
@@ -287,7 +286,6 @@ class Game:
                 self.human_count -= 1
 
         # create build icons
-        #
         # vaccicon = BuildingIcon(self, "vacc", -100)
 
         # show welcome event
@@ -400,7 +398,6 @@ class Game:
                     self.not_enough_money = True
 
     # --------------------------------------------
-
     def eventtriggercheck(self):
         month = self.months[self.date_tracker]
         year = self.year
@@ -425,10 +422,6 @@ class Game:
                 self.time_event_setup(*event_HOSUNLOCK_list)
                 self.show_event = True
                 hospitalicon = BuildingIcon(self, "hospital", 0)
-
-
-
-    # --------------------------------------------
 
     # --------------------------------------------
     def draw(self):
@@ -521,6 +514,7 @@ class Game:
 
         if not self.show_credits:
             if self.option_continue.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
+                self.mouseover += 1
                 if not self.option_continue.get_highlighted_status():
                     self.option_continue.update_text(self.option_highlight_colour)
                 if pygame.mouse.get_pressed()[0]:
@@ -529,6 +523,7 @@ class Game:
                 self.option_continue.update_text(self.option_default_colour)
 
             if self.option_credits.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
+                self.mouseover += 1
                 if not self.option_credits.get_highlighted_status():
                     self.option_credits.update_text(self.option_highlight_colour)
                 if pygame.mouse.get_pressed()[0]:
@@ -537,6 +532,7 @@ class Game:
                 self.option_credits.update_text(self.option_default_colour)
 
             if self.option_quit.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
+                self.mouseover += 1
                 if not self.option_quit.get_highlighted_status():
                     self.option_quit.update_text(self.option_highlight_colour)
                 if pygame.mouse.get_pressed()[0]:
@@ -552,6 +548,7 @@ class Game:
 
         else:
             if self.option_back_to_menu.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
+                self.mouseover += 1
                 if not self.option_back_to_menu.get_highlighted_status():
                     self.option_back_to_menu.update_text(self.option_highlight_colour)
                 if pygame.mouse.get_pressed()[0]:
@@ -566,41 +563,10 @@ class Game:
             self.gamewindow.blit(self.option_back_to_menu.get_textobject(),
                                  self.option_back_to_menu.get_textobject_rect())
 
-
-
         pygame.display.flip()
     # --------------------------------------------
     def show_start_screen(self):  # TODO: add start screen
         pass
-    #     self.start_screen = True
-    #     self.start_menu_sprites = pygame.sprite.Group()
-    #
-    #     m = MenuSelectables(self, "Start Game", WIDTH/2, HEIGHT/2)
-    #
-    #     self.start_screen_update()
-    #
-    #     # self.start_screen = False  # wenn shit vorbei ist
-    #
-    # def start_screen_update(self):
-    #     while self.start_screen:
-    #
-    #         for sprite in self.start_menu_sprites:
-    #             if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-    #                 sprite.highlight = True
-    #             else:
-    #                 sprite.highlight = False
-    #
-    #         self.start_screen_draw()
-    #
-    #
-    #
-    # def start_screen_draw(self):
-    #     self.gamewindow.fill(BLACK)
-    #
-    #     self.start_menu_sprites.draw(self.gamewindow)
-    #
-    #     pygame.display.flip()
-
 
     # --------------------------------------------
     def show_gameover_screen(self):  # TODO: add end screen

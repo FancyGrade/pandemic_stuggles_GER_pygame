@@ -7,6 +7,7 @@ from sprites import *
 from tilemap import *
 from events import *
 import pytmx
+import sys
 
 # TODO: add settings screen
 #   maybe as an function which can be called in the start screen after applying settings?
@@ -28,9 +29,15 @@ class Game:
 
         # TODO: add sound effects + music
 
+        # load fonts
+        self.font_munro_small = pygame.font.Font("assets/munro-small.ttf", 30)
+        self.font_munro = pygame.font.Font("assets/munro.ttf", 70)
+        self.font_comic_sans = pygame.font.SysFont("Comic Sans MS", 25)
+
         # load load_data
         self.running = True
         self.load_data()
+        self.pause_setup()
 
         # camera setup
         self.camera_x = 0
@@ -70,6 +77,7 @@ class Game:
                                                         False, pygame.Color(BLACK), pygame.Color(WHITE))
 
         self.pause = False
+        self.show_menu = True
 
         # building setup
         self.currently_selected_building = None
@@ -105,11 +113,6 @@ class Game:
             if tile_object.name == "unpassable_border":
                 Border(self, tile_object.x, tile_object.y,
                        tile_object.width, tile_object.height)
-
-        # load font
-        self.font_munro_small = pygame.font.Font("assets/munro-small.ttf", 30)
-        self.font_munro = pygame.font.Font("assets/munro.ttf", 70)
-        self.font_comic_sans = pygame.font.SysFont("Comic Sans MS", 25)
 
     # --------------------------------------------
     def time_event_setup(self, bg, event_headline, event_text, event_picture):
@@ -300,14 +303,17 @@ class Game:
             self.clock.tick(FPS)
             self.events()
             self.update()
-            self.draw()
+            if not self.show_menu:
+                self.draw()
+            else:
+                self.draw_pause()
             self.camera()
             self.moneytracker()
             self.mouseovercursor()
 
     # --------------------------------------------
     def update(self):
-        if not self.show_event and not self.pause:
+        if not self.show_event and not self.pause and not self.show_menu:
             self.all_sprites.update()
             self.time_tracker_function()
 
@@ -349,17 +355,15 @@ class Game:
     # --------------------------------------------
     def events(self):
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:  # QUIT Knopf einfügen
-                if event.key == pygame.K_q:
-                    pygame.quit()
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_e:
                     if not self.show_event:
                         self.time_event_setup(*event01_list)
                         self.show_event = True
                     else:
                         self.show_event = False
-                if event.key == pygame.K_p:
-                    self.pause = not self.pause
+                if event.key == pygame.K_ESCAPE:
+                    self.show_menu = not self.show_menu
             # RMB cancels build mode for buildings, killing the sprite
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
                 for sprite in self.tempbuildings:
@@ -430,6 +434,10 @@ class Game:
     def draw(self):
         self.gamewindow.blit(self.map_img, (self.camera_x, self.camera_y))
         self.humans.draw(self.gamewindow)
+        for building in self.buildings:
+            building.draw_range()
+        for building in self.tempbuildings:
+            building.draw_range()
         self.buildings.draw(self.gamewindow)
         self.building_icons.draw(self.gamewindow)
         self.tempbuildings.draw(self.gamewindow)
@@ -437,12 +445,6 @@ class Game:
         for building in self.building_icons:
             building.drawinfotext()  # mouseover
 
-        for building in self.buildings:
-            building.draw_range()
-        for building in self.tempbuildings:
-            building.draw_range()
-
-        # Events draw
 
         # show FPS
         if SHOW_FPS:
@@ -484,16 +486,121 @@ class Game:
                 self.not_enough_money = False
                 self.not_enough_money_timer = 0
 
-        # draw pause symbol
-        if self.pause:
-            pygame.draw.rect(self.gamewindow, WHITE, (WIDTH / 2 - 80, HEIGHT / 2, 50, 100))
-            pygame.draw.rect(self.gamewindow, WHITE, (WIDTH / 2, HEIGHT / 2, 50, 100))
 
         pygame.display.flip()
 
+
+    def pause_setup(self):
+        self.show_credits = False
+
+        self.option_default_colour = BLACK
+        self.option_highlight_colour = RED
+
+        self.option_continue = Menuoptions(self, " Spiel Starten / Fortsetzen ", 100)
+        self.option_credits = Menuoptions(self, " Credits ", 200)
+        self.option_quit = Menuoptions(self, " Spiel Beenden ", 300)
+
+        self.creditA = Menuoptions(self, " Ein Spiel von: @FancyGrade ", -100)
+        self.creditB = Menuoptions(self, " Mit Musik von: ? ", 0)
+        self.creditC = Menuoptions(self, " Veroeffentlicht: 2021 ", 100)
+        self.creditD = Menuoptions(self, " Bildrechte: siehe licensing.txt ", 200)
+        self.option_back_to_menu = Menuoptions(self, " Zurueck zum Menue ", 400)
+
+
+
+    def draw_pause(self):
+        self.gamewindow.blit(self.map_img, (self.camera_x, self.camera_y))
+        self.humans.draw(self.gamewindow)
+        for building in self.buildings:
+            building.draw_range()
+        for building in self.tempbuildings:
+            building.draw_range()
+        self.buildings.draw(self.gamewindow)
+        self.tempbuildings.draw(self.gamewindow)
+
+
+        if not self.show_credits:
+            if self.option_continue.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
+                if not self.option_continue.get_highlighted_status():
+                    self.option_continue.update_text(self.option_highlight_colour)
+                if pygame.mouse.get_pressed()[0]:
+                    self.show_menu = not self.show_menu
+            else:
+                self.option_continue.update_text(self.option_default_colour)
+
+            if self.option_credits.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
+                if not self.option_credits.get_highlighted_status():
+                    self.option_credits.update_text(self.option_highlight_colour)
+                if pygame.mouse.get_pressed()[0]:
+                    self.show_credits = True
+            else:
+                self.option_credits.update_text(self.option_default_colour)
+
+            if self.option_quit.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
+                if not self.option_quit.get_highlighted_status():
+                    self.option_quit.update_text(self.option_highlight_colour)
+                if pygame.mouse.get_pressed()[0]:
+                    print("tschö")
+                    pygame.quit()
+                    sys.exit()
+            else:
+                self.option_quit.update_text(self.option_default_colour)
+
+            self.gamewindow.blit(self.option_continue.get_textobject(), self.option_continue.get_textobject_rect())
+            self.gamewindow.blit(self.option_credits.get_textobject(), self.option_credits.get_textobject_rect())
+            self.gamewindow.blit(self.option_quit.get_textobject(), self.option_quit.get_textobject_rect())
+
+        else:
+            if self.option_back_to_menu.get_textobject_rect().collidepoint((pygame.mouse.get_pos())):
+                if not self.option_back_to_menu.get_highlighted_status():
+                    self.option_back_to_menu.update_text(self.option_highlight_colour)
+                if pygame.mouse.get_pressed()[0]:
+                    self.show_credits = False
+            else:
+                self.option_back_to_menu.update_text(self.option_default_colour)
+
+            self.gamewindow.blit(self.creditA.get_textobject(), self.creditA.get_textobject_rect())
+            self.gamewindow.blit(self.creditB.get_textobject(), self.creditB.get_textobject_rect())
+            self.gamewindow.blit(self.creditC.get_textobject(), self.creditC.get_textobject_rect())
+            self.gamewindow.blit(self.creditD.get_textobject(), self.creditD.get_textobject_rect())
+            self.gamewindow.blit(self.option_back_to_menu.get_textobject(),
+                                 self.option_back_to_menu.get_textobject_rect())
+
+
+
+        pygame.display.flip()
     # --------------------------------------------
     def show_start_screen(self):  # TODO: add start screen
         pass
+    #     self.start_screen = True
+    #     self.start_menu_sprites = pygame.sprite.Group()
+    #
+    #     m = MenuSelectables(self, "Start Game", WIDTH/2, HEIGHT/2)
+    #
+    #     self.start_screen_update()
+    #
+    #     # self.start_screen = False  # wenn shit vorbei ist
+    #
+    # def start_screen_update(self):
+    #     while self.start_screen:
+    #
+    #         for sprite in self.start_menu_sprites:
+    #             if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+    #                 sprite.highlight = True
+    #             else:
+    #                 sprite.highlight = False
+    #
+    #         self.start_screen_draw()
+    #
+    #
+    #
+    # def start_screen_draw(self):
+    #     self.gamewindow.fill(BLACK)
+    #
+    #     self.start_menu_sprites.draw(self.gamewindow)
+    #
+    #     pygame.display.flip()
+
 
     # --------------------------------------------
     def show_gameover_screen(self):  # TODO: add end screen
@@ -503,7 +610,9 @@ class Game:
 g = Game()
 
 while g.running:
+    g.show_start_screen()
     g.new()
     g.show_gameover_screen()
 
 pygame.quit()
+sys.exit()

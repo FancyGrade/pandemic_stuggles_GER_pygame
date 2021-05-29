@@ -324,3 +324,76 @@ class VaccineCenter(BuildingTemplate):  # TODO: make vacc c unavailable until ev
                                                  pygame.sprite.collide_circle)
         for sprite in spritelist:
             sprite.vaccinate()
+
+
+class MenuSelectables(pygame.sprite.Sprite):
+    def __init__(self, game, text, x, y):
+        self.groups = game.start_menu_sprites
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.game = game
+        self.text = text
+        self.highlight = False
+        self.regularcolour = RED
+        self.highlightcolour = GREEN
+        self.colour = self.regularcolour
+        self.textobject = self.game.font_munro.render(self.text, False, self.colour)
+        textobject_width = self.textobject.get_width()
+        textobject_height = self.textobject.get_width()
+        self.image = pygame.Surface((x, y))
+        self.image.fill(WHITE)
+        self.image.blit(self.textobject, [x/2 - textobject_width/2, y/2 - textobject_height/2])
+
+        x = x - (self.textobject.get_rect().width / 2)
+
+        self.rect = self.textobject.get_rect()
+        self.rect.x, self.rect.y = x, y
+
+
+    def update_colour(self):
+        if self.highlight and self.colour == self.regularcolour:
+            self.textobject = self.game.font_munro.render(self.text, False, self.colour)
+        if not self.highlight and self.colour == self.highlightcolour:
+            self.textobject = self.game.font_munro.render(self.text, False, self.colour)
+        pass
+
+    # def draw(self):
+    #     self.game.gamewindow.blit(self.textobject, self.rect)
+
+
+class Menuoptions():
+    def __init__(self, game, text, y_offset):
+        self.game = game
+        self.text = text
+        self.highlight = False
+        self.colour = self.game.option_default_colour
+
+
+        self.textobject = self.game.font_munro.render(self.text, False, self.colour, GREY150)
+
+        self.textobject_rect = self.textobject.get_rect()
+        self.textobject_rect.center = WIDTH / 2, HEIGHT / 2 - 100 + y_offset
+
+    def get_textobject(self):
+        return self.textobject
+
+    def get_textobject_rect(self):
+        return self.textobject_rect
+
+    def get_highlighted_status(self):
+        return self.highlight
+
+
+    def update_text(self, colour):
+        if self.colour != colour:
+            self.colour = colour
+            self.textobject = self.game.font_munro.render(self.text, False, self.colour, GREY150)
+
+
+    # def update_colour(self, colour):
+    #     self.colour = colour
+    #     if self.highlight and self.colour == self.regularcolour:
+    #         self.textobject = self.game.font_munro.render(self.text, False, colour)
+    #     if not self.highlight and self.colour == self.highlightcolour:
+    #         self.textobject = self.game.font_munro.render(self.text, False, colour)
+    #     pass

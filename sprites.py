@@ -139,9 +139,9 @@ class Buildings(pygame.sprite.Sprite):
         self.groups = game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.testcenterimage = "assets/buildingicons/testcenter_scaled.png"
-        self.hospitalimage = "assets/buildingicons/hospital_scaled.png"
-        self.vaccineimage = "assets/buildingicons/vacc_scaled.png"
+        self.game.testcenterimage = "assets/buildingicons/testcenter_scaled.png"
+        self.game.hospitalimage = "assets/buildingicons/hospital_scaled.png"
+        self.game.vaccineimage = "assets/buildingicons/vacc_scaled.png"
 
         self.image = pygame.Surface((HUMAN_SIZE, HUMAN_SIZE))
         self.image.fill(WHITE)
@@ -158,15 +158,15 @@ class BuildingIcon(Buildings):
         super().__init__(game)
         self.game.building_icons.add(self)
         if btype == "testcenter":
-            image = self.testcenterimage
+            image = self.game.testcenterimage
             infotext = str(" erstelle ein Testcenter ("
                            + str(TESTCENTER_PRICE) + "€)")
         elif btype == "hospital":
-            image = self.hospitalimage
+            image = self.game.hospitalimage
             infotext = str(" erstelle ein Krankenhaus ("
                            + str(HOSPITAL_PRICE) + "€)")
         else:
-            image = self.vaccineimage
+            image = self.game.vaccineimage
             infotext = str(" erstelle ein Impfzentrum ("
                            + str(VACCINECENTER_PRICE) + "€)")
         self.type = btype
@@ -181,13 +181,13 @@ class BuildingIcon(Buildings):
             if self.rect.collidepoint((pygame.mouse.get_pos())) and pygame.mouse.get_pressed()[0]:
                 if self.type == "testcenter":
                     self.game.currently_selected_building = 1
-                    b = BuildingIconShadow(self.game, self.testcenterimage, TESTCENTER_RANGE)
+                    b = BuildingIconShadow(self.game, self.game.testcenterimage, TESTCENTER_RANGE)
                 elif self.type == "hospital":
                     self.game.currently_selected_building = 2
-                    b = BuildingIconShadow(self.game, self.hospitalimage, HOSPITAL_RANGE)
+                    b = BuildingIconShadow(self.game, self.game.hospitalimage, HOSPITAL_RANGE)
                 elif self.type == "vacc":
                     self.game.currently_selected_building = 3
-                    b = BuildingIconShadow(self.game, self.vaccineimage, VACCINECENTER_RANGE)
+                    b = BuildingIconShadow(self.game, self.game.vaccineimage, VACCINECENTER_RANGE)
 
     def drawinfotext(self):
         x, y = pygame.mouse.get_pos()
@@ -278,7 +278,7 @@ class TestCenter(BuildingTemplate):
         self.price = TESTCENTER_PRICE
         self.time = TESTCENTER_TIME
         super().__init__(game)
-        image = self.testcenterimage
+        image = self.game.testcenterimage
         self.setup_image(image)
 
     def effect(self):  # expose true status (colour) of humans in range
@@ -300,7 +300,7 @@ class Hospital(BuildingTemplate):
         self.price = HOSPITAL_PRICE
         self.time = HOSPITAL_TIME
         super().__init__(game)
-        image = self.hospitalimage
+        image = self.game.hospitalimage
         self.setup_image(image)
 
     def effect(self):
@@ -316,7 +316,7 @@ class VaccineCenter(BuildingTemplate):  # TODO: make vacc c unavailable until ev
         self.price = VACCINECENTER_PRICE
         self.time = VACCINECENTER_TIME
         super().__init__(game)
-        image = self.vaccineimage
+        image = self.game.vaccineimage
         self.setup_image(image)
 
     def effect(self):
@@ -391,5 +391,3 @@ class Menuoptions():
         self.text = text
         self.textobject = self.game.font_munro.render(self.text, False, self.colour,
                                                       self.game.option_background_colour)
-
-

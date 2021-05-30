@@ -9,11 +9,6 @@ from events import *
 import pytmx
 import sys
 
-# TODO: add settings screen
-#   maybe as an function which can be called in the start screen after applying settings?
-
-
-
 class Game:
     def __init__(self):
         pygame.init()
@@ -79,9 +74,15 @@ class Game:
         self.show_menu = True
 
         # building setup
+        self.testcenterimage = "assets/buildingicons/testcenter_scaled.png"
+        self.hospitalimage = "assets/buildingicons/hospital_scaled.png"
+        self.vaccineimage = "assets/buildingicons/vacc_scaled.png"
         self.currently_selected_building = None
         self.hospitalunlocked = False
         self.hospitalunlocked_event_shown = False
+        self.testcenter_unlocked = False
+        self.hospital_unlocked = False
+        self.vaccinecenter_unlocked = False
 
         # USEREVENTS
         self.BUILD_TESTCENTER = pygame.USEREVENT + 0
@@ -354,16 +355,28 @@ class Game:
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_e:
-                    if not self.show_event:
-                        self.time_event_setup(*event01_list)
-                        self.show_event = True
-                    else:
-                        self.show_event = False
+                # if event.key == pygame.K_e:
+                #     if not self.show_event:
+                #         self.time_event_setup(*event01_list)
+                #         self.show_event = True
+                #     else:
+                #         self.show_event = False
                 if event.key == pygame.K_ESCAPE:
                     self.show_menu = not self.show_menu
                     self.show_credits = False
                     self.show_settings = False
+                elif event.key == pygame.K_1:
+                    if self.testcenter_unlocked:
+                        b = BuildingIconShadow(self, self.testcenterimage, TESTCENTER_RANGE)
+                        self.currently_selected_building = 1
+                elif event.key == pygame.K_2:
+                    if self.hospital_unlocked:
+                        b = BuildingIconShadow(self, self.hospitalimage, HOSPITAL_RANGE)
+                        self.currently_selected_building = 2
+                elif event.key == pygame.K_3:
+                    if self.vaccinecenter_unlocked:
+                        b = BuildingIconShadow(self, self.vaccineimage, VACCINECENTER_RANGE)
+                        self.currently_selected_building = 3
             # RMB cancels build mode for buildings, killing the sprite
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
                 for sprite in self.tempbuildings:
@@ -410,6 +423,7 @@ class Game:
             self.time_event_setup(*event02_list)
             self.show_event = True
             testcentericon = BuildingIcon(self, "testcenter", 100)
+            self.testcenter_unlocked = True
 
         # EVENT 2
         # if self.date_tracker == 2 and self.year == 2020:
@@ -424,6 +438,7 @@ class Game:
                 self.time_event_setup(*event_HOSUNLOCK_list)
                 self.show_event = True
                 hospitalicon = BuildingIcon(self, "hospital", 0)
+                self.hospital_unlocked = True
 
     # --------------------------------------------
     def draw(self):
@@ -564,9 +579,6 @@ class Game:
                 self.show_settings = False
 
         pygame.display.flip()
-    # --------------------------------------------
-    def show_start_screen(self):  # TODO: add start screen
-        pass
 
     # --------------------------------------------
     def show_gameover_screen(self):  # TODO: add end screen
@@ -576,7 +588,6 @@ class Game:
 g = Game()
 
 while g.running:
-    g.show_start_screen()
     g.new()
     g.show_gameover_screen()
 

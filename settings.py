@@ -3,8 +3,8 @@
 # https://youtu.be/uWvb3QzA48c
 
 # video settings
-WIDTH = int(1920/3*2)
-HEIGHT = int(1080/3*2)
+WIDTH = int(1920/4*3)
+HEIGHT = int(1080/4*3)
 FPS = 60
 TITLE = "corona universalis (working title)"
 TILESIZE = 12

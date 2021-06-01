@@ -24,9 +24,9 @@ class Game:
         # TODO: add sound effects + music
 
         # load fonts
-        self.font_munro_small = pygame.font.Font("assets/munro-small.ttf", 30)
-        self.font_munro = pygame.font.Font("assets/munro.ttf", 70)
-        self.font_comic_sans = pygame.font.SysFont("Comic Sans MS", 25)
+        self.font_munro_small = pygame.font.Font("assets/fonts/munro-small.ttf", 30)
+        self.font_munro = pygame.font.Font("assets/fonts/munro.ttf", 70)
+        self.font_comic_sans = pygame.font.SysFont("Comic Sans MS", 22)
 
         # load load_data
         self.running = True
@@ -102,8 +102,8 @@ class Game:
     def load_data(self):
         game_folder = path.dirname(__file__)
         self.map_data = []
-        assets_folder = path.join(game_folder, "assets")
-        self.map = TiledMap(path.join(assets_folder, "tileset_map.tmx"))
+        tileset_assets_folder = path.join(game_folder, "assets/tileset_assets")
+        self.map = TiledMap(path.join(tileset_assets_folder, "tileset_map.tmx"))
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
         # borders laden
@@ -365,6 +365,8 @@ class Game:
                     self.show_menu = not self.show_menu
                     self.show_credits = False
                     self.show_settings = False
+                    self.startup_screen_shown = True
+                    self.option_continue.update_text(" Spiel fortsetzen ")
                 elif event.key == pygame.K_1:
                     if self.testcenter_unlocked:
                         b = BuildingIconShadow(self, self.testcenterimage, TESTCENTER_RANGE)
@@ -501,12 +503,21 @@ class Game:
 
 
     def pause_setup(self):
-        # main menu
+        # startup screen
+        self.startup_screen_shown = False
+        self.title_logo = pygame.image.load("assets/title_logo.png")
+        t_x = self.title_logo.get_width()
+        t_y = self.title_logo.get_height()
+        self.title_logo = pygame.transform.scale(self.title_logo, (t_x*2, t_y*2))
+        self.title_logo_rect = self.title_logo.get_rect()
+        self.title_logo_rect.center = WIDTH / 2, HEIGHT / 2 - 100
+
+        # pause menu
         self.option_default_colour = GREY222
         self.option_highlight_colour = BLACK
         self.option_background_colour = DARKPURPLE
 
-        self.option_continue = Menuoptions(self, " Spiel Starten / Fortsetzen ", 0)
+        self.option_continue = Menuoptions(self, " Neues Spiel starten ", 0)
         self.option_settings = Menuoptions(self, " Einstellungen ", 100)
         self.option_credits = Menuoptions(self, " Credits ", 200)
         self.option_quit = Menuoptions(self, " Spiel Beenden ", 300)
@@ -540,9 +551,15 @@ class Game:
         self.buildings.draw(self.gamewindow)
         self.tempbuildings.draw(self.gamewindow)
 
+        # draw background only at first start
+        if not self.startup_screen_shown:
+            self.gamewindow.fill(GREY50)
+            self.gamewindow.blit(self.title_logo, self.title_logo_rect)
 
         if not self.show_credits and not self.show_settings:
             if self.option_continue.draw_text():
+                self.startup_screen_shown = True
+                self.option_continue.update_text(" Spiel fortsetzen ")
                 self.show_menu = not self.show_menu
 
             if self.option_settings.draw_text():

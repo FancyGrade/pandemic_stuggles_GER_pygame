@@ -330,13 +330,14 @@ class Menuoptions():
     def __init__(self, game, text, y_offset):
         self.game = game
         self.text = text
+        self.y_offset = y_offset
         self.highlight = False
         self.colour = self.game.option_default_colour
 
         self.textobject = self.game.font_munro.render(self.text, False, self.colour, self.game.option_background_colour)
 
         self.textobject_rect = self.textobject.get_rect()
-        self.textobject_rect.center = WIDTH / 2, HEIGHT / 2 - 100 + y_offset
+        self.textobject_rect.center = WIDTH / 2, HEIGHT / 2 + 100 + self.y_offset
 
         self.ready = True
         self.cooldown_timer = 0
@@ -391,3 +392,5 @@ class Menuoptions():
         self.text = text
         self.textobject = self.game.font_munro.render(self.text, False, self.colour,
                                                       self.game.option_background_colour)
+        self.textobject_rect = self.textobject.get_rect()
+        self.textobject_rect.center = WIDTH / 2, HEIGHT / 2 + 100 + self.y_offset

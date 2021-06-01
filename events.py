@@ -23,13 +23,9 @@ event_HOSUNLOCK_list = [EVENT_HOSUNLOCK_BACKGROUND, EVENT_HOSUNLOCK_HEADLINE,
 # 01
 EVENT_01_BACKGROUND = "assets/alert_bg.png"
 EVENT_01_HEADLINE = " Willkommen! "
-EVENT_01_TEXT = "Du bist von der Bundesregierung beauftragt worden \
-die Coronapandemie in Deutschland einzudaemmen. Achte darauf, dass alle \
-Menschen (Quadrate) gesund bleiben. Wenn sie krank sind (rot gefaerbt) musst \
-du sie in einem Krankenhaus heilen. Wenn du sie nicht heilst koennen \
-die Menschen sterben. Um langfristig die Pandemie einzudaemmen kannst du \
-auch Impfzentren bauen, aber die sind sehr teuer. Hoffentlich geht alles \
-gut..."
+EVENT_01_TEXT = """Du bist von der Bundesregierung beauftragt worden die Coronapandemie in Deutschland einzudämmen. Achte darauf, dass alle Menschen (Quadrate) gesund bleiben. Im Laufe der Pandemie wird es regelmäßig Ereignisse geben, welche dir bei der Bekämpfung der Pandemie helfen, oder dich dabei behindern können.
+
+Bitte beachte: Die Zeiträume dieser Ereignisse wurden in einigen Fällen aus Gameplay-Gründen leicht angepasst. Sie basieren aber auf realen Ereignissen und wurden nach bestem Wissen und Gewissen verfasst."""
 EVENT_01_PICTURE = "assets/eventicons/info_icon.png"
 event01_list = [EVENT_01_BACKGROUND, EVENT_01_HEADLINE,
                 EVENT_01_TEXT, EVENT_01_PICTURE]

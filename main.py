@@ -54,7 +54,7 @@ class Game:
         self.oldmoney = STARTMONEY
         self.moneyearning = MONEYEARNING
         self.currentmoney = self.font_munro.render((" " + str(self.money) +
-                                                    "€ "), False, pygame.Color(BLACK), pygame.Color(GREY50))
+                                                    "€ "), False, pygame.Color(WHITE), pygame.Color(GREY50))
 
         # date tracker setup
         self.months = ["Januar", "Februar", "Maerz", "April",
@@ -231,7 +231,6 @@ class Game:
 
     # --------------------------------------------
     def moneytracker(self):
-
         if self.oldmoney is not self.money:
             if self.money <= 0:
                 colour = RED
@@ -240,7 +239,7 @@ class Game:
                     self.moneytooltip_shown = True
                     self.show_event = True
             else:
-                colour = BLACK
+                colour = WHITE
             self.currentmoney = self.font_munro.render((" " + str(self.money) +
                                                         "€ "), False, pygame.Color(colour), pygame.Color(GREY50))
 
@@ -248,7 +247,6 @@ class Game:
 
     # --------------------------------------------
     def mouseovercursor(self):
-
         if self.mouseover <= 0:
             if self.mouseover_cursor:
                 pass
@@ -317,6 +315,8 @@ class Game:
             self.time_tracker_function()
 
     # --------------------------------------------
+    # camera function is copied from a tutorial
+    # "Tile-based game Part 4: Scrolling Map / Camera" https://youtu.be/3zV2ewk-IGU
     def camera(self):
         self.cx = 0
         self.cy = 0
@@ -506,11 +506,9 @@ class Game:
         # startup screen
         self.startup_screen_shown = False
         self.title_logo = pygame.image.load("assets/title_logo.png")
-        t_x = self.title_logo.get_width()
-        t_y = self.title_logo.get_height()
-        self.title_logo = pygame.transform.scale(self.title_logo, (t_x*2, t_y*2))
+        self.title_logo = pygame.transform.scale(self.title_logo, (WIDTH, HEIGHT))
         self.title_logo_rect = self.title_logo.get_rect()
-        self.title_logo_rect.center = WIDTH / 2, HEIGHT / 2 - 100
+        self.title_logo_rect.center = WIDTH / 2, HEIGHT / 2
 
         # pause menu
         self.option_default_colour = GREY222
@@ -525,7 +523,7 @@ class Game:
         # credits
         self.show_credits = False
         self.creditA = Menuoptions(self, " Ein Spiel von: @FancyGrade ", -100)
-        self.creditB = Menuoptions(self, " Mit Musik von: ? ", 0)
+        self.creditB = Menuoptions(self, " Mit Musik von: (in dieser Version noch keine Musik) ", 0)
         self.creditC = Menuoptions(self, " Veroeffentlicht: 2021 ", 100)
         self.creditD = Menuoptions(self, " Bildrechte: siehe licensing.txt ", 200)
 

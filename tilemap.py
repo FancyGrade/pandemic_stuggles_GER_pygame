@@ -1,7 +1,8 @@
 import pygame
 import pytmx
 
-# This class is copied from a tutorial from "KidsCanCode" https://youtu.be/QIXyj3WeyZM
+# This class is copied from a tutorial
+# "Tile-based game Part 12: Loading Tiled Maps" https://youtu.be/QIXyj3WeyZM
 class TiledMap:
     def __init__(self, filename):
         tm = pytmx.load_pygame(filename, pixelalpha=True)

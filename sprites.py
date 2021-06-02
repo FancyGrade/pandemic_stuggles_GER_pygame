@@ -337,7 +337,7 @@ class Menuoptions():
         self.textobject = self.game.font_munro.render(self.text, False, self.colour, self.game.option_background_colour)
 
         self.textobject_rect = self.textobject.get_rect()
-        self.textobject_rect.center = WIDTH / 2, HEIGHT / 2 + 100 + self.y_offset
+        self.textobject_rect.center = WIDTH / 2, HEIGHT / 2 - 20 + self.y_offset
 
         self.ready = True
         self.cooldown_timer = 0
@@ -393,4 +393,4 @@ class Menuoptions():
         self.textobject = self.game.font_munro.render(self.text, False, self.colour,
                                                       self.game.option_background_colour)
         self.textobject_rect = self.textobject.get_rect()
-        self.textobject_rect.center = WIDTH / 2, HEIGHT / 2 + 100 + self.y_offset
+        self.textobject_rect.center = WIDTH / 2, HEIGHT / 2 - 20 + self.y_offset

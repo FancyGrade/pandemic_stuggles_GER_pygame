@@ -3,10 +3,10 @@
 # https://youtu.be/uWvb3QzA48c
 
 # video settings
-WIDTH = int(1920/4*3)
-HEIGHT = int(1080/4*3)
+WIDTH = int(1920)
+HEIGHT = int(1080)
 FPS = 60
-TITLE = "corona universalis (working title)"
+TITLE = "pandemic stuggles"
 TILESIZE = 12
 SHOW_FPS = True
 SHOW_INFECTED = True

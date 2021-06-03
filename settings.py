@@ -13,7 +13,7 @@ SHOW_INFECTED = True
 
 # game settings
 CAMERA_SPEED = 15*60/FPS
-TIMEOFMONTH = 20*FPS  # number of seconds it takes to advance one month
+TIMEOFMONTH = 1*FPS  # number of seconds it takes to advance one month
 STARTMONEY = 70
 MONEYEARNING = 10  # how much money you get per week (default value)
 # building settings

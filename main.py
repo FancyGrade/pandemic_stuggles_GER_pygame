@@ -9,6 +9,10 @@ from events import *
 import pytmx
 import sys
 
+#TODO: checken ob das das windows scale problem löst
+import ctypes
+ctypes.windll.user32.SetProcessDPIAware()
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -26,6 +30,7 @@ class Game:
         # load fonts
         self.font_munro_small = pygame.font.Font("assets/fonts/munro-small.ttf", 30)
         self.font_munro = pygame.font.Font("assets/fonts/munro.ttf", 70)
+        self.font_munro_headline = pygame.font.Font("assets/fonts/munro.ttf", 50)
         self.font_comic_sans = pygame.font.SysFont("Comic Sans MS", 22)
 
         # load load_data
@@ -61,7 +66,7 @@ class Game:
                        "Mai", "Juni", "Juli", "August", "September",
                        "Oktober", "November", "Dezember"]
         self.year = 2020
-        self.date_tracker = 0
+        self.date_tracker = 2
         self.time_tracker = 0
         self.week_duration = int(TIMEOFMONTH / 4)
         self.week_tracker = 0
@@ -116,7 +121,7 @@ class Game:
 
     # --------------------------------------------
     def time_event_setup(self, bg, event_headline, event_text, event_picture):
-        headlinefont = self.font_munro
+        headlinefont = self.font_munro_headline
         textfont = self.font_comic_sans
 
         self.event_background = pygame.image.load(bg)
@@ -129,7 +134,7 @@ class Game:
         headline = headlinefont.render(event_headline, False,
                                           pygame.Color(BLACK), pygame.Color(WHITE))
         headline_rect = headline.get_rect()
-        headline_rect.center = self.event_background_x / 2, self.event_background_y / 2 - 200
+        headline_rect.center = self.event_background_x / 2, self.event_background_y / 2 - 180
 
         picture = pygame.image.load(event_picture)
         self.current_picture_x = picture.get_width()
@@ -288,7 +293,7 @@ class Game:
         # vaccicon = BuildingIcon(self, "vacc", -100)
 
         # show welcome event
-        self.time_event_setup(*event01_list)
+        self.time_event_setup(*eventWLCM_list)
         self.show_event = True
 
         g.gameloop()
@@ -421,18 +426,140 @@ class Game:
         week = self.week_counter
 
         # EVENT 1
-        if month == "Januar" and year == 2020 and week == 2:
-            self.time_event_setup(*event02_list)
+        if month == "Maerz" and year == 2020 and week == 2:
+            self.time_event_setup(*event01_list)
             self.show_event = True
+            # effect
             testcentericon = BuildingIcon(self, "testcenter", 100)
             self.testcenter_unlocked = True
 
         # EVENT 2
-        # if self.date_tracker == 2 and self.year == 2020:
-        #     self.timeEventsetup(*event02_list)
-        #     self.show_event = True
-        #
-        #     self.money -= 100
+        if month == "Maerz" and year == 2020 and week == 4:
+            self.time_event_setup(*event02_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 3
+        if month == "April" and year == 2020 and week == 1:
+            self.time_event_setup(*event03_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 4
+        if month == "April" and year == 2020 and week == 3:
+            self.time_event_setup(*event04_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 5
+        if month == "April" and year == 2020 and week == 4:
+            self.time_event_setup(*event05_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 6
+        if month == "Mai" and year == 2020 and week == 1:
+            self.time_event_setup(*event06_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 7
+        if month == "Mai" and year == 2020 and week == 3:
+            self.time_event_setup(*event07_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 8
+        if month == "Juni" and year == 2020 and week == 2:
+            self.time_event_setup(*event08_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 9
+        if month == "Juni" and year == 2020 and week == 4:
+            self.time_event_setup(*event09_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 10
+        if month == "November" and year == 2020 and week == 1:
+            self.time_event_setup(*event10_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 11
+        if month == "Dezember" and year == 2020 and week == 2:
+            self.time_event_setup(*event11_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 12
+        if month == "Dezember" and year == 2020 and week == 4:
+            self.time_event_setup(*event12_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 13
+        if month == "Februar" and year == 2021 and week == 1:
+            self.time_event_setup(*event13_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 14
+        if month == "Maerz" and year == 2021 and week == 1:
+            self.time_event_setup(*event14_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 15
+        if month == "Maerz" and year == 2021 and week == 2:
+            self.time_event_setup(*event15_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 16
+        if month == "Maerz" and year == 2021 and week == 3:
+            self.time_event_setup(*event16_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 17
+        if month == "April" and year == 2021 and week == 4:
+            self.time_event_setup(*event17_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 18
+        if month == "Mai" and year == 2021 and week == 2:
+            self.time_event_setup(*event18_list)
+            self.show_event = True
+            # effect
+            pass
+
+        # EVENT 19
+        if month == "Juni" and year == 2021 and week == 1:
+            self.time_event_setup(*event19_list)
+            self.show_event = True
+            # effect
+            pass
+
+
 
         if self.hospitalunlocked:
             if not self.hospitalunlocked_event_shown:

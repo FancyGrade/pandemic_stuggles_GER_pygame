@@ -9,7 +9,7 @@ from events import *
 import pytmx
 import sys
 
-#TODO: checken ob das das windows scale problem löst
+# TODO: checken ob das das windows scale problem löst
 import ctypes
 ctypes.windll.user32.SetProcessDPIAware()
 
@@ -60,6 +60,7 @@ class Game:
         self.moneyearning = MONEYEARNING
         self.currentmoney = self.font_munro.render((" " + str(self.money) +
                                                     "€ "), False, pygame.Color(WHITE), pygame.Color(GREY50))
+        self.moneywidth = self.currentmoney.get_width()
 
         # date tracker setup
         self.months = ["Januar", "Februar", "Maerz", "April",
@@ -247,7 +248,7 @@ class Game:
                 colour = WHITE
             self.currentmoney = self.font_munro.render((" " + str(self.money) +
                                                         "€ "), False, pygame.Color(colour), pygame.Color(GREY50))
-
+            self.moneywidth = self.currentmoney.get_width()
         self.oldmoney = self.money
 
     # --------------------------------------------
@@ -616,7 +617,7 @@ class Game:
         self.gamewindow.blit(self.currentdate, (5, 5))
 
         # draw money & not not_enough_money warning
-        self.gamewindow.blit(self.currentmoney, (WIDTH / 2 - 30, 5))
+        self.gamewindow.blit(self.currentmoney, (WIDTH / 2 - self.moneywidth / 2, 5))
         if self.not_enough_money:
             x, y = pygame.mouse.get_pos()
             self.gamewindow.blit(self.not_enough_money_text, (x + 30, y + 10))

@@ -9,9 +9,10 @@ from events import *
 import pytmx
 import sys
 
-# TODO: checken ob das das windows scale problem löst
+# fix for the windows scaling problem in pygame
 import ctypes
 ctypes.windll.user32.SetProcessDPIAware()
+
 
 class Game:
     def __init__(self):
@@ -53,6 +54,11 @@ class Game:
         self.eventanimation_timer = 0
         self.click = False
         self.moneytooltip_shown = False
+        self.infect_multiplyer = 10
+        self.testcenter_range_multiplyer = 1.0
+        self.vaccinecenter_price = VACCINECENTER_PRICE
+        self.testcenter_price = TESTCENTER_PRICE
+        self.show_endscreen = False
 
         # economy setup
         self.money = STARTMONEY
@@ -135,7 +141,7 @@ class Game:
         headline = headlinefont.render(event_headline, False,
                                           pygame.Color(BLACK), pygame.Color(WHITE))
         headline_rect = headline.get_rect()
-        headline_rect.center = self.event_background_x / 2, self.event_background_y / 2 - 180
+        headline_rect.center = self.event_background_x / 2, self.event_background_y / 2 - 220
 
         picture = pygame.image.load(event_picture)
         self.current_picture_x = picture.get_width()
@@ -144,10 +150,10 @@ class Game:
         # rotate pictures and create rotated copys
         self.picture_rotated_right = pygame.transform.rotate(picture, 10)
         self.picture_rotated_right_rect = self.picture_rotated_right.get_rect()
-        self.picture_rotated_right_rect.center = WIDTH / 2, HEIGHT / 2 + self.event_background_y / 2 - 125
+        self.picture_rotated_right_rect.center = WIDTH / 2, HEIGHT / 2 + self.event_background_y / 2 - 137
         self.picture_rotated_left = pygame.transform.rotate(picture, -10)
         self.picture_rotated_left_rect = self.picture_rotated_left.get_rect()
-        self.picture_rotated_left_rect.center = WIDTH / 2, HEIGHT / 2 + self.event_background_y / 2 - 125
+        self.picture_rotated_left_rect.center = WIDTH / 2, HEIGHT / 2 + self.event_background_y / 2 - 137
 
         # enable alpha channel for surface
         self.current_surface = pygame.Surface((self.event_background_x,
@@ -165,8 +171,8 @@ class Game:
         words = [word.split(' ') for word in event_text.splitlines()]
         space = textfont.size(" ")[0]
         max_width, max_height = self.current_surface.get_size()
-        max_width -= 150
-        pos = self.event_background_x / 2 - 360, self.event_background_y / 3
+        max_width -= 50
+        pos = self.event_background_x / 2 - 440, self.event_background_y / 3 - 40
         x, y = pos
         for line in words:
             for word in line:
@@ -180,8 +186,6 @@ class Game:
                 x += word_width + space
             x = pos[0]
             y += word_height
-
-        # change values according to the event
 
     # --------------------------------------------
     def time_event(self):
@@ -203,7 +207,7 @@ class Game:
         self.gamewindow.blit(self.current_surface, surface_rect)
 
         # check for click to exit event
-        exitbutton = pygame.Rect(WIDTH / 2 + 280, HEIGHT / 2 - 340, 155, 110)
+        exitbutton = pygame.Rect(WIDTH / 2 + 280, HEIGHT / 2 - 340, 230, 100)
         if exitbutton.collidepoint((pygame.mouse.get_pos())):
             self.mouseover += 1
             if pygame.mouse.get_pressed()[0]:
@@ -240,7 +244,7 @@ class Game:
         if self.oldmoney is not self.money:
             if self.money <= 0:
                 colour = RED
-                if not self.moneytooltip_shown:
+                if not self.moneytooltip_shown and not self.show_event:
                     self.time_event_setup(*eventMN_list)
                     self.moneytooltip_shown = True
                     self.show_event = True
@@ -275,6 +279,7 @@ class Game:
         self.humans = pygame.sprite.Group()
         self.infected = pygame.sprite.Group()
         self.ill = pygame.sprite.Group()
+        self.vacced = pygame.sprite.Group()
         self.buildings = pygame.sprite.Group()
         self.tempbuildings = pygame.sprite.Group()
         self.building_icons = pygame.sprite.Group()
@@ -290,8 +295,6 @@ class Game:
                 h.kill()
                 self.human_count -= 1
 
-        # create build icons
-        # vaccicon = BuildingIcon(self, "vacc", -100)
 
         # show welcome event
         self.time_event_setup(*eventWLCM_list)
@@ -375,14 +378,24 @@ class Game:
                     self.option_continue.update_text(" Spiel fortsetzen ")
                 elif event.key == pygame.K_1:
                     if self.testcenter_unlocked:
-                        b = BuildingIconShadow(self, self.testcenterimage, TESTCENTER_RANGE)
+                        for sprite in self.tempbuildings:
+                            sprite.kill()
+                        self.currently_selected_building = None
+                        b = BuildingIconShadow(self, self.testcenterimage,
+                                               int(TESTCENTER_RANGE * self.testcenter_range_multiplyer))
                         self.currently_selected_building = 1
                 elif event.key == pygame.K_2:
                     if self.hospital_unlocked:
+                        for sprite in self.tempbuildings:
+                            sprite.kill()
+                        self.currently_selected_building = None
                         b = BuildingIconShadow(self, self.hospitalimage, HOSPITAL_RANGE)
                         self.currently_selected_building = 2
                 elif event.key == pygame.K_3:
                     if self.vaccinecenter_unlocked:
+                        for sprite in self.tempbuildings:
+                            sprite.kill()
+                        self.currently_selected_building = None
                         b = BuildingIconShadow(self, self.vaccineimage, VACCINECENTER_RANGE)
                         self.currently_selected_building = 3
             # RMB cancels build mode for buildings, killing the sprite
@@ -431,7 +444,7 @@ class Game:
             self.time_event_setup(*event01_list)
             self.show_event = True
             # effect
-            testcentericon = BuildingIcon(self, "testcenter", 100)
+            testcentericon = BuildingIcon(self, "testcenter", 200)
             self.testcenter_unlocked = True
 
         # EVENT 2
@@ -439,21 +452,21 @@ class Game:
             self.time_event_setup(*event02_list)
             self.show_event = True
             # effect
-            pass
+            self.infect_multiplyer -= 3
 
         # EVENT 3
         if month == "April" and year == 2020 and week == 1:
             self.time_event_setup(*event03_list)
             self.show_event = True
             # effect
-            pass
+            self.money -= 150
 
         # EVENT 4
         if month == "April" and year == 2020 and week == 3:
             self.time_event_setup(*event04_list)
             self.show_event = True
             # effect
-            pass
+            self.infect_multiplyer += 2
 
         # EVENT 5
         if month == "April" and year == 2020 and week == 4:
@@ -467,56 +480,59 @@ class Game:
             self.time_event_setup(*event06_list)
             self.show_event = True
             # effect
-            pass
+            self.infect_multiplyer += 3
 
         # EVENT 7
         if month == "Mai" and year == 2020 and week == 3:
             self.time_event_setup(*event07_list)
             self.show_event = True
             # effect
-            pass
+            self.money -= 200
 
         # EVENT 8
         if month == "Juni" and year == 2020 and week == 2:
             self.time_event_setup(*event08_list)
             self.show_event = True
             # effect
-            pass
+            self.testcenter_range_multiplyer += 0.8
 
         # EVENT 9
         if month == "Juni" and year == 2020 and week == 4:
             self.time_event_setup(*event09_list)
             self.show_event = True
             # effect
-            pass
+            self.testcenter_range_multiplyer -= 0.2
 
         # EVENT 10
         if month == "November" and year == 2020 and week == 1:
             self.time_event_setup(*event10_list)
             self.show_event = True
             # effect
-            pass
+            self.infect_multiplyer -= 4
 
         # EVENT 11
         if month == "Dezember" and year == 2020 and week == 2:
             self.time_event_setup(*event11_list)
             self.show_event = True
             # effect
-            pass
+            self.moneyearning -= 3
 
         # EVENT 12
         if month == "Dezember" and year == 2020 and week == 4:
             self.time_event_setup(*event12_list)
             self.show_event = True
             # effect
-            pass
+            self.vaccinecenter_unlocked = True
+            vaccicon = BuildingIcon(self, "vacc", -200)
 
         # EVENT 13
         if month == "Februar" and year == 2021 and week == 1:
             self.time_event_setup(*event13_list)
             self.show_event = True
             # effect
-            pass
+            self.vaccinecenter_price = 100
+            for sprite in self.building_icons:
+                sprite.update_mouseover_text()
 
         # EVENT 14
         if month == "Maerz" and year == 2021 and week == 1:
@@ -530,37 +546,83 @@ class Game:
             self.time_event_setup(*event15_list)
             self.show_event = True
             # effect
-            pass
+            self.vaccinecenter_price = 150
+            for sprite in self.building_icons:
+                sprite.update_mouseover_text()
 
         # EVENT 16
         if month == "Maerz" and year == 2021 and week == 3:
             self.time_event_setup(*event16_list)
             self.show_event = True
             # effect
-            pass
+            self.money -= 100
+            self.testcenter_range_multiplyer += 0.4
+
 
         # EVENT 17
         if month == "April" and year == 2021 and week == 4:
             self.time_event_setup(*event17_list)
             self.show_event = True
             # effect
-            pass
+            self.vaccinecenter_price = 70
+            for sprite in self.building_icons:
+                sprite.update_mouseover_text()
 
         # EVENT 18
         if month == "Mai" and year == 2021 and week == 2:
             self.time_event_setup(*event18_list)
             self.show_event = True
             # effect
-            pass
+            self.testcenter_price = 18
+            for sprite in self.building_icons:
+                sprite.update_mouseover_text()
+            self.money -= 80
 
         # EVENT 19
         if month == "Juni" and year == 2021 and week == 1:
+            count_vacc = len(self.vacced.sprites())
+            count_hum = len(self.humans.sprites())
+            count_inf = len(self.infected.sprites())
+            count_need_treatment = len(self.ill.sprites())
+
+            self.percent_vacced = int(count_vacc / count_hum * 100)
+            self.percent_infected = int(count_inf / count_hum * 100)
+            self.percent_need_treatment = int(count_need_treatment / count_hum * 100)
+
+            EVENT_19_BACKGROUND = "assets/alert_bg.png"
+            EVENT_19_HEADLINE = " Ende? "
+            EVENT_19_TEXT = str("Dies ist das Ende des Spiels. Du hast insgesamt " + str(self.percent_vacced) + """% \
+der Menschen erfolgreich geimpft. Hoffentlich konntest du trotz der Patzer der Regierung dein Budget so \
+einteilen, dass möglichst viele Menschen geimpft wurden. 
+
+Leider ist die Realität kein Spiel. Die deutsche Bundesregierung hat durch Profitgier Einzelner und durch \
+unverständliche Entscheidungen anderer viele fatale Fehler gemacht. Viele Menschen sind aufgrund dieser \
+Ereignisse erkrankt und einige davon verstorben. Jedes Leben verdient es gerettet zu werden. \
+In einer Krisenzeit wie dieser wünsche ich mir mehr Sorgfalt in den politischen Entscheidungen.
+(Gleich werden dir weitere Spielstatistiken angezeigt.)""")
+            EVENT_19_PICTURE = "assets/eventicons/info_icon.png"
+            event19_list = [EVENT_19_BACKGROUND, EVENT_19_HEADLINE,
+                            EVENT_19_TEXT, EVENT_19_PICTURE]
+
             self.time_event_setup(*event19_list)
             self.show_event = True
             # effect
-            pass
+            self.show_endscreen = True
 
+        if self.show_endscreen and not self.show_event:
 
+            EVENT_END_BACKGROUND = "assets/alert_bg.png"
+            EVENT_END_HEADLINE = " Statistiken "
+            EVENT_END_TEXT = str("Geimpft: " + str(self.percent_vacced) + """%
+Infiziert: """ + str(self.percent_infected) + """%
+Schwer erkrankt: """ + str(self.percent_need_treatment) + "%")
+            EVENT_END_PICTURE = "assets/eventicons/info_icon.png"
+            eventEND_list = [EVENT_END_BACKGROUND, EVENT_END_HEADLINE,
+                             EVENT_END_TEXT, EVENT_END_PICTURE]
+
+            self.time_event_setup(*eventEND_list)
+            self.show_event = True
+            self.show_endscreen = False
 
         if self.hospitalunlocked:
             if not self.hospitalunlocked_event_shown:
@@ -591,23 +653,29 @@ class Game:
             fps = self.font_munro_small.render("FPS: " + str(int(self.clock.get_fps())),
                                                False, pygame.Color(BLACK))
             self.gamewindow.blit(fps, ((WIDTH - 100), 5))
-        # print how many infected
+
+        # draw infect_multiplyer
+        multiplyer = self.font_munro_small.render(" Infekt-Multiplikator: x" + str(self.infect_multiplyer / 10) + " ",
+                                                  False, pygame.Color(RED), pygame.Color(WHITE))
+        self.gamewindow.blit(multiplyer, (25, HEIGHT - 35))
+
+        # draw how many infected
         count_inf = len(self.infected.sprites())
         count_hum = len(self.humans.sprites())
         count_trt = len(self.ill.sprites())
         if self.show_infected:
-            perc_inf = self.font_munro_small.render((str(count_inf) + " of " +
+            perc_inf = self.font_munro_small.render(" " + (str(count_inf) + " of " +
                                                      str(count_hum) + " infected (" +
                                                      str(int(count_inf / count_hum * 100)) +
                                                      " %)"), False, pygame.Color(BLACK))
-            self.gamewindow.blit(perc_inf, (25, HEIGHT - 60))
+            self.gamewindow.blit(perc_inf, (25, HEIGHT - 90))
             # print how many in need of medical treatment
-            perc_trt = self.font_munro_small.render((str(count_trt) + " of " +
+            perc_trt = self.font_munro_small.render(" " + (str(count_trt) + " of " +
                                                      str(count_hum) +
                                                      " in need of medical treatment (" +
                                                      str(int(count_trt / count_hum * 100)) +
                                                      " %)"), False, pygame.Color(BLACK))
-            self.gamewindow.blit(perc_trt, (25, HEIGHT - 35))
+            self.gamewindow.blit(perc_trt, (25, HEIGHT - 65))
 
         # show event_text
         if self.show_event:
@@ -626,10 +694,9 @@ class Game:
                 self.not_enough_money = False
                 self.not_enough_money_timer = 0
 
-
         pygame.display.flip()
 
-
+    # --------------------------------------------
     def pause_setup(self):
         # startup screen
         self.startup_screen_shown = False
@@ -653,7 +720,7 @@ class Game:
         self.creditA = Menuoptions(self, " Ein Spiel von: @FancyGrade ", -100)
         self.creditB = Menuoptions(self, " Mit Musik von: (in dieser Version noch keine Musik) ", 0)
         self.creditC = Menuoptions(self, " Veroeffentlicht: 2021 ", 100)
-        self.creditD = Menuoptions(self, " Bildrechte: siehe licensing.txt ", 200)
+        self.creditD = Menuoptions(self, " Bildrechte: siehe LICENSE.txt ", 200)
 
         self.option_back_to_menu = Menuoptions(self, " Zurueck zum Menue ", 400)
 

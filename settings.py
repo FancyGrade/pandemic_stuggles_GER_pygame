@@ -13,18 +13,18 @@ SHOW_INFECTED = True
 
 # game settings
 CAMERA_SPEED = 15*60/FPS
-TIMEOFMONTH = 1*FPS  # number of seconds it takes to advance one month
+TIMEOFMONTH = 35*FPS  # number of seconds it takes to advance one month
 STARTMONEY = 70
-MONEYEARNING = 10  # how much money you get per week (default value)
+MONEYEARNING = 45  # how much money you get per week (default value)
 # building settings
 TESTCENTER_RANGE = 200
 TESTCENTER_PRICE = 10
-TESTCENTER_TIME = 5
+TESTCENTER_TIME = 10
 HOSPITAL_RANGE = 150
-HOSPITAL_PRICE = 100
+HOSPITAL_PRICE = 45
 HOSPITAL_TIME = 20
-VACCINECENTER_RANGE = 100
-VACCINECENTER_PRICE = 400
+VACCINECENTER_RANGE = 160
+VACCINECENTER_PRICE = 200
 VACCINECENTER_TIME = 30
 
 # colours
@@ -47,7 +47,7 @@ HUMAN_SIZE = 10  # how tall the Humans are (in pixels)
 WALKCYCLE = 100  # how often the humans move in random directions
 WALKDISTANCE = 7  # how many frames they should walk in a random direction
 INITIAL_INFECTION_CHANCE = 1  # percentage of humans that spawn infected (standard value = 1)
-INFECT_CHANCE = 5   # number of seconds of contact it takes for (on average) of infection after one second contact
+INFECT_CHANCE = 4   # number of seconds of contact it takes for (on average) of infection after one second contact
 ILL_CHANCE = 200  # number of seconds of being infected it takes for humans to become ill
 HUMAN_COUNT = 2500
 

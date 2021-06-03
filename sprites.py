@@ -40,8 +40,8 @@ class Human(pygame.sprite.Sprite):
         self.image = surface
 
     def infect_check(self):
-        ix = random.randint(0, (FPS * INFECT_CHANCE))
-        if ix == (FPS * INFECT_CHANCE):
+        ix = random.randint(0, int(FPS * INFECT_CHANCE / (self.game.infect_multiplyer / 10)))
+        if ix == int(FPS * INFECT_CHANCE / (self.game.infect_multiplyer / 10)):
             if pygame.sprite.spritecollideany(self, self.game.infected) is not None:
                 return True
 
@@ -61,12 +61,14 @@ class Human(pygame.sprite.Sprite):
     def heal(self):
         self.colour = WHITE
         self.game.infected.remove(self)
+        self.game.ill.remove(self)
         self.infected_status = False
         self.apply_colour()
 
     def vaccinate(self):
         self.colour = BLUE
         self.vacc_state = True
+        self.game.vacced.add(self)
         self.apply_colour()
 
     def walk(self, wx, wy):
@@ -164,7 +166,7 @@ class BuildingIcon(Buildings):
         if btype == "testcenter":
             image = self.game.testcenterimage
             infotext = str(" erstelle ein Testcenter ("
-                           + str(TESTCENTER_PRICE) + "€)")
+                           + str(game.testcenter_price) + "€)")
         elif btype == "hospital":
             image = self.game.hospitalimage
             infotext = str(" erstelle ein Krankenhaus ("
@@ -172,20 +174,38 @@ class BuildingIcon(Buildings):
         else:
             image = self.game.vaccineimage
             infotext = str(" erstelle ein Impfzentrum ("
-                           + str(VACCINECENTER_PRICE) + "€)")
+                           + str(game.vaccinecenter_price) + "€)")
         self.type = btype
+        self.game = game
         self.text = game.font_munro_small.render(infotext, False, pygame.Color(WHITE), pygame.Color(BLACK))
         self.image = pygame.image.load(image)
         self.rect = self.image.get_rect()
         self.rect.x = 5
         self.rect.y = HEIGHT / 2 - y
 
+    def update_mouseover_text(self):
+        if self.type == "testcenter":
+            image = self.game.testcenterimage
+            infotext = str(" erstelle ein Testcenter ("
+                           + str(self.game.testcenter_price) + "€)")
+        elif self.type == "hospital":
+            image = self.game.hospitalimage
+            infotext = str(" erstelle ein Krankenhaus ("
+                           + str(HOSPITAL_PRICE) + "€)")
+        else:
+            image = self.game.vaccineimage
+            infotext = str(" erstelle ein Impfzentrum ("
+                           + str(self.game.vaccinecenter_price) + "€)")
+        self.text = self.game.font_munro_small.render(infotext, False, pygame.Color(WHITE), pygame.Color(BLACK))
+        self.image = pygame.image.load(image)
+
     def update(self):
         if self.game.currently_selected_building is None:
             if self.rect.collidepoint((pygame.mouse.get_pos())) and pygame.mouse.get_pressed()[0]:
                 if self.type == "testcenter":
                     self.game.currently_selected_building = 1
-                    b = BuildingIconShadow(self.game, self.game.testcenterimage, TESTCENTER_RANGE)
+                    b = BuildingIconShadow(self.game, self.game.testcenterimage,
+                                           int(TESTCENTER_RANGE * self.game.testcenter_range_multiplyer))
                 elif self.type == "hospital":
                     self.game.currently_selected_building = 2
                     b = BuildingIconShadow(self.game, self.game.hospitalimage, HOSPITAL_RANGE)
@@ -204,13 +224,16 @@ class BuildingIconShadow(Buildings):
     def __init__(self, game, image, effect_range):
         super().__init__(game)
         self.game.tempbuildings.add(self)
-        self.image = pygame.image.load(image)
+        bigimage = pygame.image.load(image)
+        bigimage_w = bigimage.get_width()
+        bigimage_h = bigimage.get_height()
+        self.image = pygame.transform.scale(bigimage, (int(bigimage_w / 2), int(bigimage_h / 2)))
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.rect = self.image.get_rect()
         self.rect.center = pygame.mouse.get_pos()
         self.ring_colour = BLACK
-        self.range = effect_range
+        self.shadowrange = effect_range
 
     def update(self):
         x, y = pygame.mouse.get_pos()
@@ -221,7 +244,7 @@ class BuildingIconShadow(Buildings):
     def draw_range(self):
         pygame.draw.circle(self.game.gamewindow, self.ring_colour,
                            (self.rect.x + self.width / 2,
-                            self.rect.y + self.height / 2), int(self.range), 3)
+                            self.rect.y + self.height / 2), int(self.shadowrange), 3)
 
 
 class BuildingTemplate(Buildings):
@@ -240,7 +263,10 @@ class BuildingTemplate(Buildings):
         game.money -= self.price
 
     def setup_image(self, image):
-        self.image = pygame.image.load(image)
+        bigimage = pygame.image.load(image)
+        bigimage_w = bigimage.get_width()
+        bigimage_h = bigimage.get_height()
+        self.image = pygame.transform.scale(bigimage, (int(bigimage_w / 2), int(bigimage_h / 2)))
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.rect = self.image.get_rect()
@@ -278,8 +304,8 @@ class BuildingTemplate(Buildings):
 
 class TestCenter(BuildingTemplate):
     def __init__(self, game):
-        self.range = TESTCENTER_RANGE
-        self.price = TESTCENTER_PRICE
+        self.range = int(TESTCENTER_RANGE * game.testcenter_range_multiplyer)
+        self.price = game.testcenter_price
         self.time = TESTCENTER_TIME
         super().__init__(game)
         image = self.game.testcenterimage
@@ -317,7 +343,7 @@ class Hospital(BuildingTemplate):
 class VaccineCenter(BuildingTemplate):  # TODO: make vacc c unavailable until event in late 2020
     def __init__(self, game):
         self.range = VACCINECENTER_RANGE
-        self.price = VACCINECENTER_PRICE
+        self.price = game.vaccinecenter_price
         self.time = VACCINECENTER_TIME
         super().__init__(game)
         image = self.game.vaccineimage

@@ -166,15 +166,15 @@ class BuildingIcon(Buildings):
         if btype == "testcenter":
             image = self.game.testcenterimage
             infotext = str(" erstelle ein Testcenter ("
-                           + str(game.testcenter_price) + "€)")
+                           + str(game.testcenter_price) + "€) (Hotkey: 1) ")
         elif btype == "hospital":
             image = self.game.hospitalimage
             infotext = str(" erstelle ein Krankenhaus ("
-                           + str(HOSPITAL_PRICE) + "€)")
+                           + str(HOSPITAL_PRICE) + "€) (Hotkey: 2) ")
         else:
             image = self.game.vaccineimage
             infotext = str(" erstelle ein Impfzentrum ("
-                           + str(game.vaccinecenter_price) + "€)")
+                           + str(game.vaccinecenter_price) + "€) (Hotkey: 3) ")
         self.type = btype
         self.game = game
         self.text = game.font_munro_small.render(infotext, False, pygame.Color(WHITE), pygame.Color(BLACK))
@@ -187,15 +187,15 @@ class BuildingIcon(Buildings):
         if self.type == "testcenter":
             image = self.game.testcenterimage
             infotext = str(" erstelle ein Testcenter ("
-                           + str(self.game.testcenter_price) + "€)")
+                           + str(self.game.testcenter_price) + "€) (Hotkey: 1) ")
         elif self.type == "hospital":
             image = self.game.hospitalimage
             infotext = str(" erstelle ein Krankenhaus ("
-                           + str(HOSPITAL_PRICE) + "€)")
+                           + str(HOSPITAL_PRICE) + "€) (Hotkey: 2) ")
         else:
             image = self.game.vaccineimage
             infotext = str(" erstelle ein Impfzentrum ("
-                           + str(self.game.vaccinecenter_price) + "€)")
+                           + str(self.game.vaccinecenter_price) + "€) (Hotkey: 3) ")
         self.text = self.game.font_munro_small.render(infotext, False, pygame.Color(WHITE), pygame.Color(BLACK))
         self.image = pygame.image.load(image)
 

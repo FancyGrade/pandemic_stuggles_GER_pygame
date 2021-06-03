@@ -615,7 +615,9 @@ In einer Krisenzeit wie dieser wünsche ich mir mehr Sorgfalt in den politischen
             EVENT_END_HEADLINE = " Statistiken "
             EVENT_END_TEXT = str("Geimpft: " + str(self.percent_vacced) + """%
 Infiziert: """ + str(self.percent_infected) + """%
-Schwer erkrankt: """ + str(self.percent_need_treatment) + "%")
+Schwer erkrankt: """ + str(self.percent_need_treatment) + """%
+
+Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-Modus weiter.""")
             EVENT_END_PICTURE = "assets/eventicons/info_icon.png"
             eventEND_list = [EVENT_END_BACKGROUND, EVENT_END_HEADLINE,
                              EVENT_END_TEXT, EVENT_END_PICTURE]

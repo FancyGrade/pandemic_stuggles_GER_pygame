@@ -18,10 +18,20 @@ EVENT_MN_PICTURE = "assets/eventicons/info_icon.png"
 eventMN_list = [EVENT_MN_BACKGROUND, EVENT_MN_HEADLINE,
                 EVENT_MN_TEXT, EVENT_MN_PICTURE]
 
+# First ill Explainer
+EVENT_ILLUNLOCK_BACKGROUND = "assets/alert_bg.png"
+EVENT_ILLUNLOCK_HEADLINE = " Erste Menschen schwer erkrankt "
+EVENT_ILLUNLOCK_TEXT = """Eins deiner Testzentren hat eine schwer erkrankte Person enteckt. Du erkennst sie an der dunkelroten/lila Farbe. Menschen erkranken schwer, wenn sie infiziert sind und längere Zeit nicht behandelt werden. Du kannst sie in einem Krankenhaus heilen. Schwer erkrankte Personen wirken sich nur auf deine End-Statistiken aus."""
+EVENT_ILLUNLOCK_PICTURE = "assets/buildingicons/hospital_scaled.png"
+event_ILLUNLOCK_list = [EVENT_ILLUNLOCK_BACKGROUND, EVENT_ILLUNLOCK_HEADLINE,
+                        EVENT_ILLUNLOCK_TEXT, EVENT_ILLUNLOCK_PICTURE]
+
 # Hospitalunlock
 EVENT_HOSUNLOCK_BACKGROUND = "assets/alert_bg.png"
 EVENT_HOSUNLOCK_HEADLINE = " Infektion entdeckt! "
-EVENT_HOSUNLOCK_TEXT = """Eins deiner Testzentren hat eine kranke Person enteckt. Du erkennst kranke Personen an ihrer roten Farbe. Baue ein Krankenhaus um die Person zu heilen. Aber pass auf: Das Gesundheitsministerium hat nur ein begrenztes Budget.
+EVENT_HOSUNLOCK_TEXT = """Eins deiner Testzentren hat eine kranke Person enteckt. Du erkennst kranke Personen an ihrer roten Farbe. Baue ein Krankenhaus um die Person zu heilen. Aber pass auf: Das Gesundheitsministerium hat nur ein begrenztes Budget. 
+
+Beachte: Menschen können schwer erkranken, wenn sie infiziert sind und längere Zeit nicht behandelt werden. Schwer erkrankte erkennst du an ihrer dunkleren Farbe. Du kannst sie in einem Krankenhaus heilen. Schwer erkrankte Personen wirken sich nur auf deine End-Statistiken aus.
 
 Effekt: Krankenhaus freigeschaltet"""
 EVENT_HOSUNLOCK_PICTURE = "assets/buildingicons/hospital_scaled.png"
@@ -33,7 +43,9 @@ EVENT_WLCM_BACKGROUND = "assets/alert_bg.png"
 EVENT_WLCM_HEADLINE = " Willkommen! "
 EVENT_WLCM_TEXT = """Du bist von der Bundesregierung beauftragt worden die Coronapandemie in Deutschland einzudämmen. Achte darauf, dass alle Menschen (Kreise) gesund bleiben. Im Laufe der Pandemie wird es regelmäßig Ereignisse geben, welche dir bei der Bekämpfung der Pandemie helfen oder dich dabei behindern können.
 
-Bitte beachte: Die Zeiträume dieser Ereignisse wurden in einigen Fällen aus Gameplay-Gründen leicht angepasst. Sie basieren aber auf realen Ereignissen und wurden nach bestem Wissen und Gewissen verfasst."""
+Bitte beachte: Die Zeiträume dieser Ereignisse wurden in einigen Fällen aus Gameplay-Gründen leicht angepasst.
+
+Steuerung: WASD für die Kamera, ESC für das Pause Menü, Hotkeys 1-3 für Gebäude (nachdem sie freigeschaltet wurden)"""
 EVENT_WLCM_PICTURE = "assets/eventicons/info_icon.png"
 eventWLCM_list = [EVENT_WLCM_BACKGROUND, EVENT_WLCM_HEADLINE,
                   EVENT_WLCM_TEXT, EVENT_WLCM_PICTURE]
@@ -63,7 +75,7 @@ event02_list = [EVENT_02_BACKGROUND, EVENT_02_HEADLINE,
 # 03
 EVENT_03_BACKGROUND = "assets/alert_bg.png"
 EVENT_03_HEADLINE = " Maskenkauf unter der Hand "
-EVENT_03_TEXT = """Die Wissenschaft ist sich inzwischen einig: FFP2 Masken schützen nachweislich vor einem Infekt mit dem Virus. Da die Nachfrage hoch ist kauft das Gesundheitsministerium ca. 60 Millionen Masken. Einige Beteiligte sahen die Chance sich an der Pandemie zu bereichern und bestellten weitere 67 Millionen Masken ohne das Angebot vorher öffentlich auszuschreiben. "Zufällig" waren diese 67 Millionen Masken auch deutlich teurer im Einkauf. 
+EVENT_03_TEXT = """Die Wissenschaft ist sich inzwischen einig: FFP2 Masken schützen nachweislich vor einem Infekt mit dem Virus. Da die Nachfrage hoch ist, kauft das Gesundheitsministerium ca. 60 Millionen Masken. Einige Beteiligte sahen die Chance sich an der Pandemie zu bereichern und bestellten weitere 67 Millionen Masken ohne das Angebot vorher öffentlich auszuschreiben. "Zufällig" waren diese 67 Millionen Masken auch deutlich teurer im Einkauf. 
 
 Effekt: Einige der Mehrkosten werden auf dein Budget umgewälzt, du verlierst 150€"""
 EVENT_03_PICTURE = "assets/eventicons/mask_icon.png"
@@ -102,7 +114,7 @@ event06_list = [EVENT_06_BACKGROUND, EVENT_06_HEADLINE,
 # 07
 EVENT_07_BACKGROUND = "assets/alert_bg.png"
 EVENT_07_HEADLINE = " Voll in die Nuesse "
-EVENT_07_TEXT = """Die Maskenaffäre ist größer als gedacht: CS Politiker Nüsslein und Sauter sollten für diverse Masken Deals mit privaten Unternehmen nach aktuellen Angaben 11,5 Millionen Euro Provision bekommen. Die Provision wurde in klassischer CSU Manier durch diverse Offshore Konten geleitet. Während sich andere an der Pandemie bereichern stehst du weiterhin vor der Herausforderung Menschenleben mit deinem Budget zu retten. 
+EVENT_07_TEXT = """Die Maskenaffäre ist größer als gedacht: CSU Politiker Nüsslein und Sauter sollten für diverse Masken Deals mit privaten Unternehmen nach aktuellen Angaben 11,5 Millionen Euro Provision bekommen. Die Provision wurde in klassischer CSU Manier durch diverse Offshore Konten geleitet. Während sich andere an der Pandemie bereichern, stehst du weiterhin vor der Herausforderung Menschenleben mit deinem Budget zu retten. 
 
 Effekt: Aufgrund der Mehrkosten werden dir 200€ abgezogen (Nüsslein und Sauter richten ihren Dank aus)"""
 EVENT_07_PICTURE = "assets/eventicons/peanut_icon.png"

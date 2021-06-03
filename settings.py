@@ -9,13 +9,13 @@ FPS = 60
 TITLE = "pandemic stuggles"
 TILESIZE = 12
 SHOW_FPS = True
-SHOW_INFECTED = True
+SHOW_INFECTED = False
 
 # game settings
 CAMERA_SPEED = 15*60/FPS
 TIMEOFMONTH = 35*FPS  # number of seconds it takes to advance one month
 STARTMONEY = 70
-MONEYEARNING = 45  # how much money you get per week (default value)
+MONEYEARNING = 65  # how much money you get per week (default value)
 # building settings
 TESTCENTER_RANGE = 200
 TESTCENTER_PRICE = 10

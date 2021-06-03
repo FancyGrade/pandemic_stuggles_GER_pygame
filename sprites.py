@@ -7,9 +7,11 @@ class Human(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.humans
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.image = pygame.Surface((HUMAN_SIZE, HUMAN_SIZE))
-        self.game = game
         self.colour = WHITE
+        surface = pygame.Surface((HUMAN_SIZE, HUMAN_SIZE), pygame.SRCALPHA)
+        pygame.draw.circle(surface, self.colour, (HUMAN_SIZE/2, HUMAN_SIZE/2), HUMAN_SIZE/2)
+        self.image = surface
+        self.game = game
         self.apply_colour()
         self.rect = self.image.get_rect()
         self.rect.center = x, y
@@ -33,7 +35,9 @@ class Human(pygame.sprite.Sprite):
             self.infect()
 
     def apply_colour(self):
-        self.image.fill(self.colour)
+        surface = pygame.Surface((HUMAN_SIZE, HUMAN_SIZE), pygame.SRCALPHA)
+        pygame.draw.circle(surface, self.colour, (HUMAN_SIZE / 2, HUMAN_SIZE / 2), HUMAN_SIZE / 2)
+        self.image = surface
 
     def infect_check(self):
         ix = random.randint(0, (FPS * INFECT_CHANCE))

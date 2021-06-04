@@ -13,23 +13,15 @@ einen festen Betrag gutgeschrieben, aber wenn dein Budget unter \
 0 fällt kannst du keine weiteren Gebaeude mehr bauen. \
 Einige Ereignisse können sich negativ auf dein Einkommen auswirken, \
 stell also sicher, \
-dass du immer noch eine eiserne Reserve für Notfaelle übrig laesst."
+dass du immer noch eine eiserne Reserve für Notfälle übriglässt."
 EVENT_MN_PICTURE = "assets/eventicons/info_icon.png"
 eventMN_list = [EVENT_MN_BACKGROUND, EVENT_MN_HEADLINE,
                 EVENT_MN_TEXT, EVENT_MN_PICTURE]
 
-# First ill Explainer
-EVENT_ILLUNLOCK_BACKGROUND = "assets/alert_bg.png"
-EVENT_ILLUNLOCK_HEADLINE = " Erste Menschen schwer erkrankt "
-EVENT_ILLUNLOCK_TEXT = """Eins deiner Testzentren hat eine schwer erkrankte Person enteckt. Du erkennst sie an der dunkelroten/lila Farbe. Menschen erkranken schwer, wenn sie infiziert sind und längere Zeit nicht behandelt werden. Du kannst sie in einem Krankenhaus heilen. Schwer erkrankte Personen wirken sich nur auf deine End-Statistiken aus."""
-EVENT_ILLUNLOCK_PICTURE = "assets/buildingicons/hospital_scaled.png"
-event_ILLUNLOCK_list = [EVENT_ILLUNLOCK_BACKGROUND, EVENT_ILLUNLOCK_HEADLINE,
-                        EVENT_ILLUNLOCK_TEXT, EVENT_ILLUNLOCK_PICTURE]
-
 # Hospitalunlock
 EVENT_HOSUNLOCK_BACKGROUND = "assets/alert_bg.png"
 EVENT_HOSUNLOCK_HEADLINE = " Infektion entdeckt! "
-EVENT_HOSUNLOCK_TEXT = """Eins deiner Testzentren hat eine kranke Person enteckt. Du erkennst kranke Personen an ihrer roten Farbe. Baue ein Krankenhaus um die Person zu heilen. Aber pass auf: Das Gesundheitsministerium hat nur ein begrenztes Budget. 
+EVENT_HOSUNLOCK_TEXT = """Eins deiner Testzentren hat eine kranke Person entdeckt. Du erkennst kranke Personen an ihrer roten Farbe. Baue ein Krankenhaus um die Person zu heilen. Aber pass auf: Das Gesundheitsministerium hat nur ein begrenztes Budget. 
 
 Beachte: Menschen können schwer erkranken, wenn sie infiziert sind und längere Zeit nicht behandelt werden. Schwer erkrankte erkennst du an ihrer dunkleren Farbe. Du kannst sie in einem Krankenhaus heilen. Schwer erkrankte Personen wirken sich nur auf deine End-Statistiken aus.
 

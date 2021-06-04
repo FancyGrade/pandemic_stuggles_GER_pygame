@@ -25,6 +25,7 @@ class Game:
         pygame.mouse.set_cursor(pygame.cursors.tri_left)
         self.mouseover = 0
         self.mouseover_cursor = False
+        self.mouseover_building_icons = False
 
         # TODO: add sound effects + music
 
@@ -128,6 +129,11 @@ class Game:
 
     # --------------------------------------------
     def time_event_setup(self, bg, event_headline, event_text, event_picture):
+        # deselect buldings before setup
+        for sprite in self.tempbuildings:
+            sprite.kill()
+        self.currently_selected_building = None
+
         headlinefont = self.font_munro_headline
         textfont = self.font_comic_sans
 
@@ -417,17 +423,17 @@ class Game:
                 if self.playing:
                     self.playing = False
                     self.running = False
-            elif event.type == self.BUILD_TESTCENTER:
+            elif event.type == self.BUILD_TESTCENTER and not self.mouseover_building_icons:
                 if self.money >= 1:
                     t = TestCenter(self)
                 else:
                     self.not_enough_money = True
-            elif event.type == self.BUILD_HOSTPITAL:
+            elif event.type == self.BUILD_HOSTPITAL and not self.mouseover_building_icons:
                 if self.money >= 1:
                     h = Hospital(self)
                 else:
                     self.not_enough_money = True
-            elif event.type == self.BUILD_VACCINECENTER:
+            elif event.type == self.BUILD_VACCINECENTER and not self.mouseover_building_icons:
                 if self.money >= 1:
                     v = VaccineCenter(self)
                 else:

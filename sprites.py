@@ -218,6 +218,9 @@ class BuildingIcon(Buildings):
         if self.rect.collidepoint((x, y)):
             self.game.gamewindow.blit(self.text, (x + 20, y + 10))
             self.game.mouseover += 1
+            self.game.mouseover_building_icons = True
+        else:
+            self.game.mouseover_building_icons = False
 
 
 class BuildingIconShadow(Buildings):

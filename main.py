@@ -602,7 +602,7 @@ der Menschen erfolgreich geimpft. Hoffentlich konntest du trotz der Patzer der R
 einteilen, dass möglichst viele Menschen geimpft wurden. 
 
 Leider ist die Realität kein Spiel. Die deutsche Bundesregierung hat durch Profitgier Einzelner und durch \
-unverständliche Entscheidungen anderer viele fatale Fehler gemacht. Viele Menschen sind aufgrund dieser \
+unverständliche Entscheidungen Anderer viele fatale Fehler gemacht. Viele Menschen sind aufgrund dieser \
 Ereignisse erkrankt und einige davon verstorben. Jedes Leben verdient es gerettet zu werden. \
 In einer Krisenzeit wie dieser wünsche ich mir mehr Sorgfalt in den politischen Entscheidungen.
 (Gleich werden dir weitere Spielstatistiken angezeigt.)""")

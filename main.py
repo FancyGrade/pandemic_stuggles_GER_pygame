@@ -20,7 +20,6 @@ class Game:
         pygame.mixer.init()
         self.gamewindow = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(TITLE)
-        # displaysize = pygame.display.Info()  # get native resolution
         self.clock = pygame.time.Clock()
         pygame.mouse.set_cursor(pygame.cursors.tri_left)
         self.mouseover = 0

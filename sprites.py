@@ -399,6 +399,7 @@ class Menuoptions():
                 for menu in self.game.menu_button_list:
                     menu.unready_self()
                 self.game.gamewindow.blit(self.textobject, self.textobject_rect)
+                self.game.plop_sound.play()
                 return True
             elif not pygame.mouse.get_pressed()[0] and not self.ready:
                 self.ready = True

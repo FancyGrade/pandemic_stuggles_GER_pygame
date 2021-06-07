@@ -23,13 +23,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ----------------------------------------
 ----------------------------------------
 
-A list of all used pictures that are not my own and require me to disclose the license:
+A list of all pictures & sound files that are not my own and require me to disclose the license:
+--
+Background music:
+Snowfall final.mp3 by ShadyDave
+licensed under Creative Commons Attribution-NonCommercial 3.0
+https://freesound.org/s/262259/
 
 --
+Picture of Jens Spahn (CDU):
 Jens Spahn CDU Parteitag 2014 by Olaf Kosinsky-2.jpg
 licensed under Creative Commons Attribution-Share Alike 3.0 de
 
 --
+Picture of the Corona-Warn-App Logo:
 Corona-Warn-App Logo.png
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

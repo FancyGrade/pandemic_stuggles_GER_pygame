@@ -252,6 +252,7 @@ class BuildingIconShadow(Buildings):
 
 class BuildingTemplate(Buildings):
     def __init__(self, game):
+        game.plop_sound.play()
         super().__init__(game)
         self.game.buildings.add(self)
         self.deselect_icons()
@@ -360,9 +361,10 @@ class VaccineCenter(BuildingTemplate):  # TODO: make vacc c unavailable until ev
 
 
 class Menuoptions():
-    def __init__(self, game, text, y_offset):
+    def __init__(self, game, text, x_offset, y_offset):
         self.game = game
         self.text = text
+        self.x_offset = x_offset
         self.y_offset = y_offset
         self.highlight = False
         self.colour = self.game.option_default_colour
@@ -370,19 +372,19 @@ class Menuoptions():
         self.textobject = self.game.font_munro.render(self.text, False, self.colour, self.game.option_background_colour)
 
         self.textobject_rect = self.textobject.get_rect()
-        self.textobject_rect.center = WIDTH / 2, HEIGHT / 2 - 20 + self.y_offset
+        self.textobject_rect.center = WIDTH / 2 + self.x_offset, HEIGHT / 2 - 20 + self.y_offset
 
-        self.ready = True
+        self.ready = False
         self.cooldown_timer = 0
 
-    def check_cooldown(self):
-        if self.cooldown_timer >= int(1*FPS/3) and not self.ready:
-            self.ready = True
-            self.cooldown_timer = 0
-        elif not self.ready:
-            self.cooldown_timer += 1
-        else:
-            pass
+    # def check_cooldown(self):
+    #     if self.cooldown_timer >= int(1*FPS/3) and not self.ready:
+    #         self.ready = True
+    #         self.cooldown_timer = 0
+    #     elif not self.ready:
+    #         self.cooldown_timer += 1
+    #     else:
+    #         pass
 
 
     def get_textobject(self):
@@ -393,7 +395,6 @@ class Menuoptions():
 
     def get_highlighted_status(self):
         return self.highlight
-
 
     def update_text_colour(self, colour):
         if self.colour != colour:
@@ -407,18 +408,21 @@ class Menuoptions():
             if not self.get_highlighted_status():
                 self.update_text_colour(self.game.option_highlight_colour)
             if pygame.mouse.get_pressed()[0] and self.ready:
-                if self.ready:
-                    self.ready = False
-                    self.game.gamewindow.blit(self.textobject, self.textobject_rect)
-                    return True
-                else:
-                    pass
+                for menu in self.game.menu_button_list:
+                    menu.unready_self()
+                self.game.gamewindow.blit(self.textobject, self.textobject_rect)
+                return True
+            elif not pygame.mouse.get_pressed()[0] and not self.ready:
+                self.ready = True
         else:
             self.update_text_colour(self.game.option_default_colour)
 
-        self.check_cooldown()
+        # self.check_cooldown()
 
         self.game.gamewindow.blit(self.textobject, self.textobject_rect)
+
+    def unready_self(self):
+        self.ready = False
 
 
     def update_text(self, text):

@@ -97,6 +97,25 @@ class Game:
         self.hospital_unlocked = False
         self.vaccinecenter_unlocked = False
 
+        # sound setup
+        self.allsounds_list = []
+
+        self.plop_sound = pygame.mixer.Sound("assets/soundfiles/plop.mp3")
+        self.plop_sound.set_volume(DEFAULTVOLUME)
+        self.allsounds_list.append(self.plop_sound)
+
+        self.eventsound_sound = pygame.mixer.Sound("assets/soundfiles/whoosh.mp3")
+        self.eventsound_sound.set_volume(DEFAULTVOLUME)
+        self.allsounds_list.append(self.eventsound_sound)
+
+        self.bgmusic_sound = pygame.mixer.Sound("assets/soundfiles/262259__shadydave__snowfall-final.mp3")
+        self.bgmusic_sound.set_volume(DEFAULTVOLUME)
+        self.allsounds_list.append(self.bgmusic_sound)
+
+        self.bgmusic_sound.play(-1)
+
+        self.change_master_sound()
+
         # USEREVENTS
         self.BUILD_TESTCENTER = pygame.USEREVENT + 0
         self.build_testcenter_event = pygame.event.Event(self.BUILD_TESTCENTER)
@@ -192,6 +211,9 @@ class Game:
                 x += word_width + space
             x = pos[0]
             y += word_height
+
+        # play sound!
+        self.eventsound_sound.play()
 
     # --------------------------------------------
     def time_event(self):
@@ -301,11 +323,6 @@ class Game:
                 h.kill()
                 self.human_count -= 1
 
-
-        # show welcome event
-        self.time_event_setup(*eventWLCM_list)
-        self.show_event = True
-
         g.gameloop()
 
     # --------------------------------------------
@@ -365,6 +382,13 @@ class Game:
         for sprite in self.buildings:
             sprite.rect.x -= self.camera_offset_x
             sprite.rect.y -= self.camera_offset_y
+
+    # --------------------------------------------
+    def change_master_sound(self):
+        for sound in self.allsounds_list:
+            # current_vol = sound.get_volume()
+            # new_vol = current_vol  self.master_volume
+            sound.set_volume(self.master_volume)
 
     # --------------------------------------------
     def events(self):
@@ -706,6 +730,9 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
 
     # --------------------------------------------
     def pause_setup(self):
+        self.menu_button_list = []
+        self.master_volume = DEFAULTVOLUME
+
         # startup screen
         self.startup_screen_shown = False
         self.title_logo = pygame.image.load("assets/title_logo.png")
@@ -718,19 +745,30 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
         self.option_highlight_colour = BLACK
         self.option_background_colour = DARKPURPLE
 
-        self.option_continue = Menuoptions(self, " Neues Spiel starten ", 0)
-        self.option_settings = Menuoptions(self, " Einstellungen ", 100)
-        self.option_credits = Menuoptions(self, " Credits ", 200)
-        self.option_quit = Menuoptions(self, " Spiel Beenden ", 300)
+        self.option_continue = Menuoptions(self, " Neues Spiel starten ",0, 0)
+        self.option_settings = Menuoptions(self, " Einstellungen ",0, 100)
+        self.option_credits = Menuoptions(self, " Credits ", 0, 200)
+        self.option_quit = Menuoptions(self, " Spiel Beenden ", 0, 300)
+
+        self.menu_button_list.append(self.option_continue)
+        self.menu_button_list.append(self.option_settings)
+        self.menu_button_list.append(self.option_credits)
+        self.menu_button_list.append(self.option_quit)
 
         # credits
         self.show_credits = False
-        self.creditA = Menuoptions(self, " Ein Spiel von: @FancyGrade ", -100)
-        self.creditB = Menuoptions(self, " Mit Musik von: (in dieser Version noch keine Musik) ", 0)
-        self.creditC = Menuoptions(self, " Veroeffentlicht: 2021 ", 100)
-        self.creditD = Menuoptions(self, " Bildrechte: siehe LICENSE.txt ", 200)
+        self.creditA = Menuoptions(self, " Ein Spiel von: @FancyGrade ", 0, -100)
+        self.creditB = Menuoptions(self, " Mit Musik von: ShadyDave ", 0, 0)
+        self.creditC = Menuoptions(self, " Veroeffentlicht: 2021 ", 0, 100)
+        self.creditD = Menuoptions(self, " Bildrechte: siehe LICENSE.txt ", 0, 200)
 
-        self.option_back_to_menu = Menuoptions(self, " Zurueck zum Menue ", 400)
+        self.option_back_to_menu = Menuoptions(self, " Zurueck zum Menue ", 0, 400)
+
+        self.menu_button_list.append(self.creditA)
+        self.menu_button_list.append(self.creditB)
+        self.menu_button_list.append(self.creditC)
+        self.menu_button_list.append(self.creditD)
+        self.menu_button_list.append(self.option_back_to_menu)
 
         # setting_values
         self.show_infected = SHOW_INFECTED
@@ -738,9 +776,19 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
 
         # settings
         self.show_settings = False
-        self.settingA = Menuoptions(self, " Zeige Infect-Stats: "+ str(self.show_infected) + " ", -200)
-        self.settingB = Menuoptions(self, " Zeige FPS: "+ str(self.show_fps) + " ", -100)
-        self.settingC = Menuoptions(self, " Cheat: gebe dir 1000€ ", 0)
+        self.settingA = Menuoptions(self, " Zeige Infect-Stats: "+ str(self.show_infected) + " ", 0, -200)
+        self.settingB = Menuoptions(self, " Zeige FPS: "+ str(self.show_fps) + " ", 0, -100)
+        self.settingC = Menuoptions(self, " Lautstaerke: "+ str(round(self.master_volume * 100)) + "% ", 0, 0)
+        self.settingC_A = Menuoptions(self, """ << """, self.settingC.get_textobject_rect()[0] *-1 / 2 - 20, 0)
+        self.settingC_B = Menuoptions(self, """ >> """, self.settingC.get_textobject_rect()[0] / 2 + 20, 0)
+        self.settingD = Menuoptions(self, " Cheat: gebe dir 1000€ ", 0, 100)
+
+        self.menu_button_list.append(self.settingA)
+        self.menu_button_list.append(self.settingB)
+        self.menu_button_list.append(self.settingC)
+        self.menu_button_list.append(self.settingC_A)
+        self.menu_button_list.append(self.settingC_B)
+        self.menu_button_list.append(self.settingD)
 
     def draw_pause(self):
         self.gamewindow.blit(self.map_img, (self.camera_x, self.camera_y))
@@ -759,8 +807,12 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
 
         if not self.show_credits and not self.show_settings:
             if self.option_continue.draw_text():
-                self.startup_screen_shown = True
-                self.option_continue.update_text(" Spiel fortsetzen ")
+                if not self.startup_screen_shown:
+                    self.option_continue.update_text(" Spiel fortsetzen ")
+                    # show welcome event
+                    self.time_event_setup(*eventWLCM_list)
+                    self.show_event = True
+                    self.startup_screen_shown = True
                 self.show_menu = not self.show_menu
 
             if self.option_settings.draw_text():
@@ -788,7 +840,22 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
                 self.show_fps = not self.show_fps
                 self.settingB.update_text(" Zeige FPS: " + str(self.show_fps) + " ")
 
-            if self.settingC.draw_text():
+            self.gamewindow.blit(self.settingC.get_textobject(), self.settingC.get_textobject_rect())
+            self.gamewindow.blit(self.settingC_B.get_textobject(), self.settingC_B.get_textobject_rect())
+
+            if self.settingC_A.draw_text():
+                if self.master_volume > 0:
+                    self.master_volume = round(self.master_volume - 0.05, 2)
+                    self.change_master_sound()
+                self.settingC.update_text(" Lautstaerke: "+ str(round(self.master_volume * 100)) + "% ")
+
+            if self.settingC_B.draw_text():
+                if self.master_volume < 1:
+                    self.master_volume = round(self.master_volume + 0.05, 2)
+                    self.change_master_sound()
+                self.settingC.update_text(" Lautstaerke: "+ str(round(self.master_volume * 100)) + "% ")
+
+            if self.settingD.draw_text():
                 self.money += 1000
 
         if self.show_settings or self.show_credits:

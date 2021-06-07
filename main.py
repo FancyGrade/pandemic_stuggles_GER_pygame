@@ -27,8 +27,6 @@ class Game:
         self.mouseover_cursor = False
         self.mouseover_building_icons = False
 
-        # TODO: add sound effects + music
-
         # load fonts
         self.font_munro_small = pygame.font.Font("assets/fonts/munro-small.ttf", 30)
         self.font_munro = pygame.font.Font("assets/fonts/munro.ttf", 70)
@@ -386,20 +384,12 @@ class Game:
     # --------------------------------------------
     def change_master_sound(self):
         for sound in self.allsounds_list:
-            # current_vol = sound.get_volume()
-            # new_vol = current_vol  self.master_volume
             sound.set_volume(self.master_volume)
 
     # --------------------------------------------
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                # if event.key == pygame.K_e:
-                #     if not self.show_event:
-                #         self.time_event_setup(*event01_list)
-                #         self.show_event = True
-                #     else:
-                #         self.show_event = False
                 if event.key == pygame.K_ESCAPE:
                     self.show_menu = not self.show_menu
                     self.show_credits = False
@@ -587,7 +577,6 @@ class Game:
             # effect
             self.money -= 100
             self.testcenter_range_multiplyer += 0.4
-
 
         # EVENT 17
         if month == "April" and year == 2021 and week == 4:

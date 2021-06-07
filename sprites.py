@@ -259,8 +259,6 @@ class BuildingTemplate(Buildings):
         self.x, self.y = pygame.mouse.get_pos()
         self.livetimer = self.time * FPS
         self.orig_livetimer = self.livetimer
-        # self.livetimer_increments = int(self.livetimer/255)
-        # self.increment_counter = 0
         self.ring_colour = 255
         self.radius = self.range
         self.effect_counter = FPS
@@ -377,16 +375,6 @@ class Menuoptions():
         self.ready = False
         self.cooldown_timer = 0
 
-    # def check_cooldown(self):
-    #     if self.cooldown_timer >= int(1*FPS/3) and not self.ready:
-    #         self.ready = True
-    #         self.cooldown_timer = 0
-    #     elif not self.ready:
-    #         self.cooldown_timer += 1
-    #     else:
-    #         pass
-
-
     def get_textobject(self):
         return self.textobject
 
@@ -417,13 +405,10 @@ class Menuoptions():
         else:
             self.update_text_colour(self.game.option_default_colour)
 
-        # self.check_cooldown()
-
         self.game.gamewindow.blit(self.textobject, self.textobject_rect)
 
     def unready_self(self):
         self.ready = False
-
 
     def update_text(self, text):
         self.text = text

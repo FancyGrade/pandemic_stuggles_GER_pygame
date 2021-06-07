@@ -1,4 +1,4 @@
-The MIT License (MIT)
+All Source code is licensed under the MIT License (MIT)
 
 Copyright (c) <YEAR> <OWNER>
 
@@ -22,8 +22,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ----------------------------------------
 ----------------------------------------
 ----------------------------------------
+For all image and sound files, please note the following information about the applying licenses.
 
-A list of all pictures & sound files that are not my own and require me to disclose the license:
+All images and sound files that are not listed below fall under the aforementioned MIT License.
 --
 Background music:
 Snowfall final.mp3 by ShadyDave

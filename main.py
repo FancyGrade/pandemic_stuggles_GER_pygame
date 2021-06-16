@@ -189,7 +189,7 @@ class Game:
         self.current_surface.blit(headline, headline_rect)
 
         # make text wrap around lines
-        # (stolen from https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame)
+        # (thanks to https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame)
         words = [word.split(' ') for word in event_text.splitlines()]
         space = textfont.size(" ")[0]
         max_width, max_height = self.current_surface.get_size()
@@ -240,7 +240,6 @@ class Game:
 
     # --------------------------------------------
     # keep track of current date and year and display it in top left corner
-    # sorry für den schrecklichen code in diesem teil ich hab mich völlig verzettelt :D
     def time_tracker_function(self):
         if self.time_tracker == TIMEOFMONTH:
             self.time_tracker = 0

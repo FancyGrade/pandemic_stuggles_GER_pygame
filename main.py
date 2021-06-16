@@ -188,6 +188,11 @@ class Game:
         self.current_surface.blit(self.event_background, event_background_rect)
         self.current_surface.blit(headline, headline_rect)
 
+        # prepare semi transparent window behind picture
+        self.windowsurface = pygame.Surface((190, 165))
+        self.windowsurface.set_alpha(60)
+        self.windowsurface.fill(RED)
+
         # make text wrap around lines
         # (thanks to https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame)
         words = [word.split(' ') for word in event_text.splitlines()]
@@ -214,6 +219,9 @@ class Game:
 
     # --------------------------------------------
     def time_event(self):
+        # draw semi transparent window behind picture
+        self.gamewindow.blit(self.windowsurface, (WIDTH/2 - 98, HEIGHT/2 + 162))
+
         # animate & draw picture
         if self.eventanimation_timer <= 20 / 60 * FPS:
             self.gamewindow.blit(self.picture_rotated_left,
@@ -237,6 +245,7 @@ class Game:
             self.mouseover += 1
             if pygame.mouse.get_pressed()[0]:
                 self.show_event = False
+                self.plop_sound.play()
 
     # --------------------------------------------
     # keep track of current date and year and display it in top left corner
@@ -853,15 +862,12 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
         pygame.display.flip()
 
     # --------------------------------------------
-    def show_gameover_screen(self):  # TODO: add end screen
-        pass
 
 
 g = Game()
 
 while g.running:
     g.new()
-    g.show_gameover_screen()
 
 pygame.quit()
 sys.exit()

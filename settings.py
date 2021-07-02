@@ -1,7 +1,3 @@
-# the basic strucure of this settings file is inspired by a
-# youtube tutorial by "KidsCanCode" released in january 2016:
-# https://youtu.be/uWvb3QzA48c
-
 # video settings
 WIDTH = int(1920)
 HEIGHT = int(1080)
@@ -15,7 +11,7 @@ SHOW_INFECTED = False
 CAMERA_SPEED = 15*60/FPS
 TIMEOFMONTH = 35*FPS  # number of seconds it takes to advance one month
 STARTMONEY = 70
-MONEYEARNING = 65  # how much money you get per week (default value)
+MONEYEARNING = 75  # how much money you get per week (default value)
 
 # audio settings
 DEFAULTVOLUME = 0.45

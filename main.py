@@ -343,6 +343,8 @@ class Game:
                 self.draw_pause()
             self.camera()
             self.moneytracker()
+            if not self.show_event and not self.hospitalunlocked_event_shown:
+                self.tutorial_eventtriggercheck()
             self.mouseovercursor()
 
     # --------------------------------------------
@@ -438,8 +440,6 @@ class Game:
                     pygame.event.post(self.build_hospital_event)
                 elif self.currently_selected_building == 3:
                     pygame.event.post(self.build_vaccinecenter_event)
-            # if event.type == TIMEEVENT:
-            #     self.timeEventsetup(*event)
             elif event.type == pygame.QUIT:
                 if self.playing:
                     self.playing = False
@@ -459,6 +459,16 @@ class Game:
                     v = VaccineCenter(self)
                 else:
                     self.not_enough_money = True
+
+    def tutorial_eventtriggercheck(self):
+        # HOSPITALUNLOCK
+        if self.hospitalunlocked:
+            if not self.hospitalunlocked_event_shown:
+                self.hospitalunlocked_event_shown = True
+                self.time_event_setup(*event_HOSUNLOCK_list)
+                self.show_event = True
+                hospitalicon = BuildingIcon(self, "hospital", 0)
+                self.hospital_unlocked = True
 
     # --------------------------------------------
     def eventtriggercheck(self):
@@ -604,8 +614,15 @@ class Game:
                 sprite.update_mouseover_text()
             self.money -= 80
 
-        # EVENT 19
+        # EVENT MSK
         if month == "Juni" and year == 2021 and week == 1:
+            self.time_event_setup(*eventMSK_list)
+            self.show_event = True
+            # effect
+
+
+        # EVENT 19
+        if month == "Juni" and year == 2021 and week == 2:
             count_vacc = len(self.vacced.sprites())
             count_hum = len(self.humans.sprites())
             count_inf = len(self.infected.sprites())
@@ -651,14 +668,6 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
             self.time_event_setup(*eventEND_list)
             self.show_event = True
             self.show_endscreen = False
-
-        if self.hospitalunlocked:
-            if not self.hospitalunlocked_event_shown:
-                self.hospitalunlocked_event_shown = True
-                self.time_event_setup(*event_HOSUNLOCK_list)
-                self.show_event = True
-                hospitalicon = BuildingIcon(self, "hospital", 0)
-                self.hospital_unlocked = True
 
     # --------------------------------------------
     def draw(self):
@@ -725,6 +734,14 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
         pygame.display.flip()
 
     # --------------------------------------------
+
+    def true_false_text(self, x):
+        if x:
+            return "Ja"
+        else:
+            return "Nein"
+
+    # --------------------------------------------
     def pause_setup(self):
         self.menu_button_list = []
         self.master_volume = DEFAULTVOLUME
@@ -772,9 +789,9 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
 
         # settings
         self.show_settings = False
-        self.settingA = Menuoptions(self, " Zeige Infect-Stats: "+ str(self.show_infected) + " ", 0, -200)
-        self.settingB = Menuoptions(self, " Zeige FPS: "+ str(self.show_fps) + " ", 0, -100)
-        self.settingC = Menuoptions(self, " Lautstaerke: "+ str(round(self.master_volume * 100)) + "% ", 0, 0)
+        self.settingA = Menuoptions(self, " Zeige Infect-Stats: " + self.true_false_text(self.show_infected) + " ", 0, -200)
+        self.settingB = Menuoptions(self, " Zeige FPS: " + self.true_false_text(self.show_fps) + " ", 0, -100)
+        self.settingC = Menuoptions(self, " Lautstaerke: " + str(round(self.master_volume * 100)) + "% ", 0, 0)
         self.settingC_A = Menuoptions(self, """ << """, self.settingC.get_textobject_rect()[0] *-1 / 2 - 20, 0)
         self.settingC_B = Menuoptions(self, """ >> """, self.settingC.get_textobject_rect()[0] / 2 + 20, 0)
         self.settingD = Menuoptions(self, " Cheat: gebe dir 1000€ ", 0, 100)
@@ -830,11 +847,11 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
         elif self.show_settings:
             if self.settingA.draw_text():
                 self.show_infected = not self.show_infected
-                self.settingA.update_text(" Zeige Infect-Stats: "+ str(self.show_infected) + " ")
+                self.settingA.update_text(" Zeige Infect-Stats: " + self.true_false_text(self.show_infected) + " ")
 
             if self.settingB.draw_text():
                 self.show_fps = not self.show_fps
-                self.settingB.update_text(" Zeige FPS: " + str(self.show_fps) + " ")
+                self.settingB.update_text(" Zeige FPS: " + self.true_false_text(self.show_fps) + " ")
 
             self.gamewindow.blit(self.settingC.get_textobject(), self.settingC.get_textobject_rect())
             self.gamewindow.blit(self.settingC_B.get_textobject(), self.settingC_B.get_textobject_rect())

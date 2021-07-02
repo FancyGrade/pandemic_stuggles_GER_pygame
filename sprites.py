@@ -219,8 +219,7 @@ class BuildingIcon(Buildings):
             self.game.gamewindow.blit(self.text, (x + 20, y + 10))
             self.game.mouseover += 1
             self.game.mouseover_building_icons = True
-        else:
-            self.game.mouseover_building_icons = False
+
 
 
 class BuildingIconShadow(Buildings):
@@ -342,7 +341,7 @@ class Hospital(BuildingTemplate):
             sprite.heal()
 
 
-class VaccineCenter(BuildingTemplate):  # TODO: make vacc c unavailable until event in late 2020
+class VaccineCenter(BuildingTemplate):
     def __init__(self, game):
         self.range = VACCINECENTER_RANGE
         self.price = game.vaccinecenter_price

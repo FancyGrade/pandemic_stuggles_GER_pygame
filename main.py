@@ -459,6 +459,8 @@ class Game:
                     v = VaccineCenter(self)
                 else:
                     self.not_enough_money = True
+            else:
+                self.mouseover_building_icons = False
 
     def tutorial_eventtriggercheck(self):
         # HOSPITALUNLOCK
@@ -683,7 +685,6 @@ Das Spiel ist zuende. Drücke entweder ESC und beende es, oder spiele im Endlos-
 
         for building in self.building_icons:
             building.drawinfotext()  # mouseover
-
 
         # show FPS
         if self.show_fps:

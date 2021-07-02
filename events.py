@@ -219,6 +219,16 @@ EVENT_18_PICTURE = "assets/eventicons/party_emoji.png"
 event18_list = [EVENT_18_BACKGROUND, EVENT_18_HEADLINE,
                 EVENT_18_TEXT, EVENT_18_PICTURE]
 
+# Face Mask part 3
+EVENT_MSK_BACKGROUND = "assets/alert_bg.png"
+EVENT_MSK_HEADLINE = " Maskenskandal Part 3 "
+EVENT_MSK_TEXT = """Der Maskenskandal geht in die nächste Runde. Der Spiegel berichtet, dass hunderte Millionen Masken die von dem Gesundheitsministerium im Frühjahr 2020 bestellt wurden den Anforderungen für FFP2 Masken nicht genügen.
+Das Ministerium hat darüber diskutiert diese unbrauchbaren Masken an Obdachlose, Behinderte und Hartz-IV-Empfänger zu geben. Sowohl die Opposition als auch der Großteil der Virologen sind von dieser Menschenverachtenden Idee erschüttert. Sich an Maskendeals zu bereichern ist grausam, aber benachteiligen Menschen gesundheitsgefährdende Restbestände andrehen zu wollen erreicht dystopische Ausmaße an Grausamkeit."""
+EVENT_MSK_PICTURE = "assets/eventicons/mask_icon.png"
+eventMSK_list = [EVENT_MSK_BACKGROUND, EVENT_MSK_HEADLINE,
+                 EVENT_MSK_TEXT, EVENT_MSK_PICTURE]
+
+
 # MOVED TO MAIN BECAUSE OF INCLUDED VARIABLES
 # # 19
 # EVENT_19_BACKGROUND = "assets/alert_bg.png"
